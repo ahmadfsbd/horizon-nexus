@@ -5,12 +5,6 @@
   --nexus-accent-dark: #a86464;
 }
 
-body {
-  font-size: $nexus-font-size;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 /* Keep logo sizing within Horizon header bounds to avoid layout shifts */
 .navbar-brand .openstack-logo {
   max-height: 30px;
@@ -50,9 +44,8 @@ body {
 }
 
 /* Minimal navbar color branding (no structural/layout changes) */
-.navbar,
-.navbar-default {
-  background-color: var(--nexus-accent) !important;
+.navbar.navbar-default {
+  background-color: var(--nexus-accent);
   border-color: transparent;
 
   .navbar-brand,
