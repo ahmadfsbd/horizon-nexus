@@ -23,10 +23,9 @@ Work through these **one at a time**. Deploy and verify each before moving to th
 - [x] **3. Splash/login page** — `logo-splash.svg` background updated to `#3c7d7d` teal
 - [x] **4. Sidebar accent** — Covered automatically via `$brand-primary` → `$component-active-bg`
 - [x] **5. Primary buttons** — Covered automatically via `$brand-primary: #3c7d7d`
-- [ ] **6. Favicon** — Replace with Nubestack favicon (needs `.ico` file)
+- [x] **6. Favicon** — `favicon.ico` (32×32) and `apple-touch-icon.png` (180×180) from nubestack-brand-assets
 - [x] **7. Page title** — `SITE_BRANDING = 'Nubestack'` already set
 - [x] **8. Logo sizing** — Height fixed to 28px, vertical centering improved, dead `.nexus-brand-text` CSS removed
-- [ ] **9. CI → auto deploy** — Wire `dev-deploy.sh` into workflow or add deploy step
 
 ---
 
