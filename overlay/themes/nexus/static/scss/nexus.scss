@@ -3,20 +3,27 @@
 :root {
   --nexus-accent: #0e7490;
   --nexus-accent-dark: #155e75;
-  --nexus-accent-subtle: #ecfeff;
-  --nexus-surface: #ffffff;
-  --nexus-border: #e5e7eb;
-  --nexus-text: #0f172a;
 }
 
 body {
   font-size: $nexus-font-size;
-  color: var(--nexus-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Header/nav visual refresh (structure unchanged) */
+/* Keep logo sizing within Horizon header bounds to avoid layout shifts */
+.navbar-brand .openstack-logo {
+  max-height: 30px;
+  width: auto;
+}
+
+.splash-logo {
+  max-width: 320px;
+  width: auto;
+  height: auto;
+}
+
+/* Minimal navbar color branding (no structural/layout changes) */
 .navbar,
 .navbar-default {
   background-color: var(--nexus-accent) !important;
@@ -33,27 +40,11 @@ body {
   .navbar-nav > .active > a:hover,
   .navbar-nav > .active > a:focus {
     color: #fff;
-    background-color: rgba(255, 255, 255, 0.14);
+    background-color: rgba(255, 255, 255, 0.16);
   }
 }
 
-/* Cards/panels */
-.panel {
-  border: 1px solid var(--nexus-border);
-  border-radius: $nexus-radius;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-}
-
-.panel-heading {
-  border-top-left-radius: $nexus-radius;
-  border-top-right-radius: $nexus-radius;
-}
-
-/* Buttons */
-.btn {
-  border-radius: 6px;
-}
-
+/* Minimal primary button branding */
 .btn-primary {
   background-color: var(--nexus-accent);
   border-color: var(--nexus-accent-dark);
@@ -64,32 +55,4 @@ body {
 .btn-primary:active {
   background-color: var(--nexus-accent-dark);
   border-color: var(--nexus-accent-dark);
-}
-
-/* Inputs */
-.form-control {
-  border-radius: 6px;
-  box-shadow: none;
-}
-
-.form-control:focus {
-  border-color: var(--nexus-accent);
-  box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.2);
-}
-
-/* Tables */
-.table > thead > tr > th {
-  background: var(--nexus-accent-subtle);
-  border-bottom-color: var(--nexus-border);
-}
-
-tr.selected,
-tr.selected td {
-  background: var(--nexus-accent-subtle) !important;
-}
-
-/* Dropdowns */
-.dropdown-menu {
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
 }
