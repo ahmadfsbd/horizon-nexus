@@ -12,11 +12,14 @@ COPY overlay/themes/nexus ${SITE_PACKAGES}/openstack_dashboard/themes/nexus
 COPY overlay/local_settings.d/ /etc/openstack-dashboard/local_settings.d/
 COPY overlay/local_settings.d/ ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/
 
-# Build-time static collection + SCSS compilation
+# Build-time static collection only.
+# compress --force cannot run at build time because themes.scss contains
+# Django template variables ({{ THEME_DIR }}/{{ THEME }}) that are only
+# resolved at request time. Kolla's kolla_extend_start already runs
+# compress --force at container startup when real settings are available.
 RUN echo "build-only-not-a-real-key" > ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
     && chmod 600 ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
-    && /var/lib/kolla/venv/bin/python /var/lib/kolla/venv/bin/manage.py collectstatic --noinput --clear \
-    && /var/lib/kolla/venv/bin/python /var/lib/kolla/venv/bin/manage.py compress --force
+    && /var/lib/kolla/venv/bin/python /var/lib/kolla/venv/bin/manage.py collectstatic --noinput --clear
 
 # Runtime write permissions for horizon user
 RUN chown -R horizon:horizon \
