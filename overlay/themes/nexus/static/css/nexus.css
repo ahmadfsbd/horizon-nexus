@@ -1,18 +1,20 @@
 :root {
-  --nexus-accent: #3c7d7d;
-  --nexus-accent-dark: #2d5f5f;
-  --nexus-accent-subtle: #e8f4f4;
-  --nexus-text-on-accent: #ffffff;
+  --nexus-accent: #0e7490;
+  --nexus-accent-dark: #155e75;
+  --nexus-accent-subtle: #ecfeff;
   --nexus-surface: #ffffff;
+  --nexus-border: #e5e7eb;
+  --nexus-text: #0f172a;
 }
 
 body {
   font-size: 14px;
+  color: var(--nexus-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Header/nav color polish without changing layout mechanics */
+/* Header/nav visual refresh (structure unchanged) */
 .navbar,
 .navbar-default {
   background-color: var(--nexus-accent) !important;
@@ -24,34 +26,25 @@ body {
 .navbar-default .navbar-brand,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-nav > li > a:focus {
-  color: var(--nexus-text-on-accent);
+  color: #fff;
 }
 .navbar .navbar-nav > li > a:hover,
-.navbar .navbar-nav > li.open > a,
-.navbar .navbar-nav > li.open > a:hover,
-.navbar .navbar-nav > li.open > a:focus,
-.navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li.open > a,
-.navbar-default .navbar-nav > li.open > a:hover,
-.navbar-default .navbar-nav > li.open > a:focus {
-  color: var(--nexus-text-on-accent);
-  background-color: rgba(255, 255, 255, 0.12);
-}
 .navbar .navbar-nav > .active > a,
 .navbar .navbar-nav > .active > a:hover,
 .navbar .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
-  color: var(--nexus-text-on-accent);
-  background-color: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Panels/cards */
+/* Cards/panels */
 .panel {
+  border: 1px solid var(--nexus-border);
   border-radius: 8px;
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.06);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
 }
 
 .panel-heading {
@@ -68,12 +61,15 @@ body {
   background-color: var(--nexus-accent);
   border-color: var(--nexus-accent-dark);
 }
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
   background-color: var(--nexus-accent-dark);
   border-color: var(--nexus-accent-dark);
 }
 
-/* Forms */
+/* Inputs */
 .form-control {
   border-radius: 6px;
   box-shadow: none;
@@ -81,28 +77,22 @@ body {
 
 .form-control:focus {
   border-color: var(--nexus-accent);
-  box-shadow: 0 0 0 3px rgba(60, 125, 125, 0.2);
+  box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.2);
 }
 
 /* Tables */
 .table > thead > tr > th {
-  background-color: var(--nexus-accent-subtle);
-  border-bottom-color: rgba(0, 0, 0, 0.08);
+  background: var(--nexus-accent-subtle);
+  border-bottom-color: var(--nexus-border);
 }
 
 tr.selected,
 tr.selected td {
-  background-color: var(--nexus-accent-subtle) !important;
+  background: var(--nexus-accent-subtle) !important;
 }
 
-/* Links */
-a:hover,
-a:focus {
-  color: var(--nexus-accent-dark);
-}
-
-/* Dropdown menus */
+/* Dropdowns */
 .dropdown-menu {
-  border-radius: 6px;
-  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
 }

@@ -1,28 +1,53 @@
-"""
-Nexus theme activation settings.
+""""""
 
-Placed in local_settings.d/ so it is automatically picked up by Horizon's
-settings loader. The nexus theme is set as the default; operators can still
-switch to the upstream default theme from their profile.
+Safe Nexus theme activation for Horizon.Nexus theme activation settings.
+
+
+
+This file is intentionally non-invasive:Placed in local_settings.d/ so it is automatically picked up by Horizon's
+
+- Uses Horizon's standard theme mechanismsettings loader. The nexus theme is set as the default; operators can still
+
+- Keeps upstream template structure intactswitch to the upstream default theme from their profile.
+
+- Disables django-compressor runtime/precompile paths that break in Kolla images"""
+
 """
 
 AVAILABLE_THEMES = [
-    ('default', 'Default', 'themes/default'),
-    ('nexus', 'Nexus', 'themes/nexus'),
-]
-DEFAULT_THEME = 'nexus'
+
+AVAILABLE_THEMES = [    ('default', 'Default', 'themes/default'),
+
+    ('default', 'Default', 'themes/default'),    ('nexus', 'Nexus', 'themes/nexus'),
+
+    ('nexus', 'Nexus', 'themes/nexus'),]
+
+]DEFAULT_THEME = 'nexus'
+
+DEFAULT_THEME = 'nexus'THEME_COLLECTION_DIR = 'themes'
+
 THEME_COLLECTION_DIR = 'themes'
 
 # Branding
-SITE_BRANDING = 'Nubestack'
+
+# BrandingSITE_BRANDING = 'Nubestack'
+
+SITE_BRANDING = 'Nubestack'SITE_BRANDING_LINK = 'horizon:user_home'
+
 SITE_BRANDING_LINK = 'horizon:user_home'
 
 # Disable Django Compressor entirely.
-# - COMPRESS_OFFLINE = True  → needs a pre-built manifest from `compress --force`,
-#   which fails because Kolla's themes.scss contains unresolvable Django template
-#   variables ({{ THEME_DIR }}/{{ THEME }}/variables) at compress time.
-# - COMPRESS_OFFLINE = False → falls back to inline compilation at request time,
-#   which also fails for the same SCSS reason.
+
+# Stability for Kolla + Horizon theming:# - COMPRESS_OFFLINE = True  → needs a pre-built manifest from `compress --force`,
+
+# themes.scss contains template placeholders that break libsass compile paths.#   which fails because Kolla's themes.scss contains unresolvable Django template
+
+COMPRESS_OFFLINE = False#   variables ({{ THEME_DIR }}/{{ THEME }}/variables) at compress time.
+
+COMPRESS_ENABLED = False# - COMPRESS_OFFLINE = False → falls back to inline compilation at request time,
+
+COMPRESS_PRECOMPILERS = ()#   which also fails for the same SCSS reason.
+
 # Setting COMPRESS_ENABLED = False makes Compressor pass CSS/JS through raw,
 # serving the already-collected static files directly — which is fine since
 # collectstatic already ran during the Docker build.

@@ -1,0 +1,13 @@
+{
+  "name": "horizon-nexus",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Safe Horizon theme overlay for Kolla Horizon",
+  "scripts": {
+    "build:css": "sass overlay/themes/nexus/static/scss/nexus.scss overlay/themes/nexus/static/css/nexus.css --no-source-map",
+    "test:theme": "bash tests/smoke-theme.sh"
+  },
+  "devDependencies": {
+    "sass": "1.89.0"
+  }
+}

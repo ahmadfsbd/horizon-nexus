@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 
-{% block custom_metadata %}
-  {{ block.super }}
-  <link rel="shortcut icon" href="{{ STATIC_URL }}themes/nexus/img/favicon.ico">
-{% endblock %}
-
+{#
+  Safe override: only append custom CSS files.
+  Do not override layout/header/sidebar blocks.
+#}
 {% block css %}
   {{ block.super }}
-  <link rel="stylesheet"
-    href="{{ STATIC_URL }}themes/nexus/css/nexus.css">
-  <link rel="stylesheet"
-    href="{{ STATIC_URL }}themes/nexus/css/nexus-vars.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}themes/nexus/css/nexus.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}themes/nexus/css/nexus-vars.css">
 {% endblock %}
