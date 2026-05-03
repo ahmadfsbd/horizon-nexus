@@ -9,9 +9,6 @@ ENV SITE_PACKAGES=/var/lib/kolla/venv/lib/python3/site-packages
 COPY overlay/themes/nexus \
      ${SITE_PACKAGES}/openstack_dashboard/themes/nexus
 
-COPY overlay/themes/nexus/templates \
-     ${SITE_PACKAGES}/openstack_dashboard/templates/
-
 # /etc/ path: picked up by kolla_set_configs at runtime
 COPY overlay/local_settings.d/ \
      /etc/openstack-dashboard/local_settings.d/
