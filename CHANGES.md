@@ -29,6 +29,19 @@ Work through these **one at a time**. Deploy and verify each before moving to th
 
 ---
 
+## ✅ All items done!
+
+## GitHub Secrets needed for CI auto-deploy
+Add these in **Settings → Secrets → Actions** on the repo:
+
+| Secret | Value |
+|---|---|
+| `DEPLOY_SSH_KEY` | Private SSH key for `ubuntu@192.168.122.39` |
+| `DEPLOY_HOST` | `192.168.122.39` |
+| `DEPLOY_USER` | `ubuntu` |
+
+---
+
 ## Current Accent Color
 `#3c7d7d` (teal)
 
