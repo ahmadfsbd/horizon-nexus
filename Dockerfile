@@ -23,18 +23,22 @@ COPY overlay/local_settings.d/ \
 COPY overlay/local_settings.d/ \
      ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/
 
-# Restore ownership so kolla_extend_start (running as the horizon user) can
-# write into local/enabled/ and copy policy files into /etc/openstack-dashboard/
-RUN chown -R horizon:horizon ${SITE_PACKAGES}/openstack_dashboard/local/ \
-    && chown -R horizon:horizon /etc/openstack-dashboard/
-
 # Provide a minimal build-time settings shim and run collectstatic now
-# so static assets are pre-baked into the image (faster container startup)
-RUN echo "DATABASES = {}\nSECRET_KEY = 'build-only-not-secret'" \
-    > ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/00_build_shim.py \
+# so static assets are pre-baked into the image (faster container startup).
+# Pre-create .secret_key_store so local_settings.py won't fail trying to
+# generate/read it during the build (it runs as root here, fine for build).
+RUN echo "build-only-not-secret-key-store" \
+    > ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
+    && chmod 600 ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
     && /var/lib/kolla/venv/bin/python \
        /var/lib/kolla/venv/bin/manage.py collectstatic \
-       --noinput --clear 2>&1 | tail -10 \
-    && rm ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/00_build_shim.py
+       --noinput --clear 2>&1 | tail -10
+
+# Restore ownership AFTER collectstatic so that all files created during the
+# build (including .secret_key_store) are owned by horizon, allowing
+# kolla_extend_start (which runs as the horizon user) to write into
+# local/enabled/, local_settings.d/, and /etc/openstack-dashboard/.
+RUN chown -R horizon:horizon ${SITE_PACKAGES}/openstack_dashboard/local/ \
+    && chown -R horizon:horizon /etc/openstack-dashboard/
 
 USER horizon
