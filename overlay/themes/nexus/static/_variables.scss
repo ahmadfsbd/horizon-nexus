@@ -4,11 +4,11 @@
 // then import the full Bootstrap variable set to fill in everything else.
 
 // Our accent color - set before bootstrap so $brand-primary is ours
-$brand-primary: #c37d7d;
+$brand-primary: #3c7d7d;
 
 // Navbar accent baked in at compile time
-$navbar-default-bg:                    #c37d7d;
-$navbar-default-border:                #a86464;
+$navbar-default-bg:                    #3c7d7d;
+$navbar-default-border:                #2d6b6b;
 $navbar-default-color:                 #fff;
 $navbar-default-link-color:            #fff;
 $navbar-default-link-hover-color:      #fff;
@@ -24,19 +24,3 @@ $navbar-default-toggle-border-color:   transparent;
 
 // Now import Bootstrap's full variable set (fills in all !default values)
 @import "/horizon/lib/bootstrap_scss/scss/bootstrap/variables";
-
-// Navbar — bakes our accent into Bootstrap's compiled CSS directly
-$navbar-default-bg:                    #c37d7d;
-$navbar-default-border:                darken(#c37d7d, 5%);
-$navbar-default-color:                 #fff;
-$navbar-default-link-color:            #fff;
-$navbar-default-link-hover-color:      #fff;
-$navbar-default-link-hover-bg:         rgba(255, 255, 255, 0.16);
-$navbar-default-link-active-color:     #fff;
-$navbar-default-link-active-bg:        rgba(255, 255, 255, 0.16);
-$navbar-default-brand-color:           #fff;
-$navbar-default-brand-hover-color:     #fff;
-$navbar-default-brand-hover-bg:        transparent;
-$navbar-default-toggle-hover-bg:       rgba(255, 255, 255, 0.16);
-$navbar-default-toggle-icon-bar-bg:    #fff;
-$navbar-default-toggle-border-color:   transparent;
