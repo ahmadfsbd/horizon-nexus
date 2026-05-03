@@ -1,162 +1,62 @@
-// Horizon Nexus — Main Theme Stylesheet
-// ----------------------------------------
-// 1. Import Nexus variable overrides
-//    (Horizon's upstream variables live inside the Kolla container and are not
-//     available at CI SCSS-compile time, so we do not import them here.)
+// Horizon Nexus — Non-invasive modernization
+// Keeps Horizon structure/layout intact and only updates visual styling.
 @use "variables" as *;
 
-// 3. CSS custom properties — accent colour system
-//    These are the authoritative runtime values; nexus-vars.css (loaded last
-//    in base.html) can override them at deploy time without a rebuild.
 :root {
-  --nexus-accent:        #3c7d7d;
-  --nexus-accent-dark:   #2d5f5f;
-  --nexus-accent-light:  #5aa3a3;
+  --nexus-accent: #3c7d7d;
+  --nexus-accent-dark: #2d5f5f;
   --nexus-accent-subtle: #e8f4f4;
   --nexus-text-on-accent: #ffffff;
+  --nexus-surface: #ffffff;
 }
 
-// 4. Global typography
 body {
   font-size: $base-font-size;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-// 5. Remove sidebar — navigation is horizontal in the top bar
-.sidebar,
-.nav-stacked {
-  display: none !important;
-}
-
-// Remove the left offset that Horizon's layout adds to account for the sidebar
-#main_content {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-
-#content_body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-
-// 6. Top navigation bar
+/* Header/nav color polish without changing layout mechanics */
 .navbar,
-#nexus-nav,
 .navbar-default {
   background-color: var(--nexus-accent) !important;
-  border: none;
-  height: 56px;
-  min-height: 56px;
+  border-color: transparent;
 
+  .navbar-brand,
   .navbar-nav > li > a,
   .navbar-nav > li > a:focus {
     color: var(--nexus-text-on-accent);
-    height: 56px;
-    line-height: 56px;
-    padding: 0 20px;
   }
 
-  .navbar-nav > li > a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li.open > a,
+  .navbar-nav > li.open > a:hover,
+  .navbar-nav > li.open > a:focus {
     color: var(--nexus-text-on-accent);
+    background-color: rgba(255, 255, 255, 0.12);
   }
 
-  .navbar-nav > li.active > a,
-  .navbar-nav > li.active > a:hover,
-  .navbar-nav > li.active > a:focus {
-    background-color: transparent;
+  .navbar-nav > .active > a,
+  .navbar-nav > .active > a:hover,
+  .navbar-nav > .active > a:focus {
     color: var(--nexus-text-on-accent);
-    border-bottom: 2px solid var(--nexus-text-on-accent);
+    background-color: rgba(255, 255, 255, 0.16);
   }
 }
 
-#nexus-header {
-  background-color: var(--nexus-accent);
-  color: var(--nexus-text-on-accent);
-  min-height: 56px;
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-
-  .nexus-brand {
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    flex: 0 0 auto;
-
-    a {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-    }
-
-    img {
-      display: block;
-      height: 32px;
-      width: auto;
-      max-width: 180px;
-    }
-  }
-
-  #nexus-nav {
-    display: flex;
-    align-items: stretch;
-    flex: 1 1 auto;
-    min-width: 0;
-
-    .nexus-top-nav {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: stretch;
-      height: 56px;
-      width: 100%;
-
-      > li {
-        float: none;
-        display: flex;
-        align-items: stretch;
-
-        > a {
-          display: inline-flex;
-          align-items: center;
-          line-height: 1.2;
-          min-height: 56px;
-          padding: 0 16px;
-          white-space: nowrap;
-          color: var(--nexus-text-on-accent);
-        }
-      }
-    }
-  }
-
-  .nexus-user-menu {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    color: var(--nexus-text-on-accent);
-
-    a,
-    .dropdown-toggle {
-      color: var(--nexus-text-on-accent);
-    }
-  }
-}
-
-// 7. Panels
+/* Panels/cards */
 .panel {
   border-radius: $panel-border-radius;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.06);
 }
 
-// 8. Container spacing
-.container,
-.container-fluid {
-  padding: 16px 24px;
+.panel-heading {
+  border-top-left-radius: $panel-border-radius;
+  border-top-right-radius: $panel-border-radius;
 }
 
-// 9. Buttons
+/* Buttons */
 .btn {
   border-radius: $border-radius-base;
 }
@@ -166,15 +66,29 @@ body {
   border-color: var(--nexus-accent-dark);
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active,
+  &.active {
     background-color: var(--nexus-accent-dark);
     border-color: var(--nexus-accent-dark);
   }
 }
 
-// 10. Tables
-.table thead {
+/* Forms */
+.form-control {
+  border-radius: $border-radius-base;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: var(--nexus-accent);
+  box-shadow: 0 0 0 3px rgba(60, 125, 125, 0.2);
+}
+
+/* Tables */
+.table > thead > tr > th {
   background-color: var(--nexus-accent-subtle);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
 tr.selected,
@@ -182,18 +96,14 @@ tr.selected td {
   background-color: var(--nexus-accent-subtle) !important;
 }
 
-// 11. Links
-a:hover {
+/* Links */
+a:hover,
+a:focus {
   color: var(--nexus-accent-dark);
 }
 
-// 12. Focus rings
-*:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(60, 125, 125, 0.25);
-}
-
-// 13. Content wrapper (injected by base.html block override)
-.nexus-content-wrapper {
-  padding-top: 0;
+/* Dropdown menus */
+.dropdown-menu {
+  border-radius: $border-radius-base;
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.12);
 }
