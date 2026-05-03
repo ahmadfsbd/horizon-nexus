@@ -79,16 +79,20 @@ jobs:
             --entrypoint sleep \
             ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }} infinity
 
+          # Resolve the versioned horizon source path inside the container
+          HORIZON_SRC=$(docker exec test-${{ matrix.release.name }} \
+            find /horizon-source -maxdepth 1 -mindepth 1 -type d | head -1)
+
           # 1. Verify nexus-vars.css was baked in by collectstatic
           docker exec test-${{ matrix.release.name }} \
             grep -q "\-\-nexus-accent" \
-            /usr/share/openstack-dashboard/static/themes/nexus/css/nexus-vars.css \
+            "${HORIZON_SRC}/static/themes/nexus/css/nexus-vars.css" \
             || (echo "FAIL: nexus-vars.css missing or empty for ${{ matrix.release.name }}" \
                 && docker stop test-${{ matrix.release.name }} && exit 1)
 
           # 2. Verify the nexus theme template override is in place
           docker exec test-${{ matrix.release.name }} \
-            test -f /usr/share/openstack-dashboard/openstack_dashboard/templates/base.html \
+            test -f "${HORIZON_SRC}/openstack_dashboard/templates/base.html" \
             || (echo "FAIL: base.html template override missing for ${{ matrix.release.name }}" \
                 && docker stop test-${{ matrix.release.name }} && exit 1)
 
