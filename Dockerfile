@@ -3,50 +3,45 @@ FROM quay.io/openstack.kolla/horizon:${HORIZON_TAG}
 
 USER root
 
-# Runtime paths (used by uwsgi and kolla_extend_start at deploy time)
 ENV SITE_PACKAGES=/var/lib/kolla/venv/lib/python3/site-packages
 
-# Copy nexus theme into the installed package themes directory
+# ── Theme overlay ──────────────────────────────────────────────────────────────
 COPY overlay/themes/nexus \
      ${SITE_PACKAGES}/openstack_dashboard/themes/nexus
 
-# Copy template overrides into the installed package templates directory
 COPY overlay/themes/nexus/templates \
      ${SITE_PACKAGES}/openstack_dashboard/templates/
 
-# Copy runtime theme settings to /etc/ (picked up by Kolla at runtime)
+# /etc/ path: picked up by kolla_set_configs at runtime
 COPY overlay/local_settings.d/ \
      /etc/openstack-dashboard/local_settings.d/
 
-# Also copy to the source tree local_settings.d so that the runtime
-# kolla_extend_start collectstatic (if triggered) also sees the nexus theme
+# site-packages path: used by manage.py / kolla_extend_start collectstatic
 COPY overlay/local_settings.d/ \
      ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/
 
-# Provide a minimal build-time settings shim and run collectstatic now
-# so static assets are pre-baked into the image (faster container startup).
-# Pre-create .secret_key_store so local_settings.py won't fail trying to
-# generate/read it during the build (it runs as root here, fine for build).
-RUN echo "build-only-not-secret-key-store" \
-    > ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
-    && chmod 600 ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
-    && /var/lib/kolla/venv/bin/python \
-       /var/lib/kolla/venv/bin/manage.py collectstatic \
-       --noinput --clear 2>&1 | tail -10
+# ── Patch kolla_extend_start ───────────────────────────────────────────────────
+# `compress --force` exits 1 because Kolla's own themes.scss contains a Django
+# template variable (@import "/{{ THEME_DIR }}/{{ THEME }}/variables") that
+# libsass cannot resolve at compress time. With `set -o errexit` active this
+# kills the startup script before uwsgi launches.
+# Fix: append `|| true` to line 227 (the compress --force line).
+RUN sed -i '227s/$/ || true/' /usr/local/bin/kolla_extend_start
 
-# Patch kolla_extend_start to make `compress --force` non-fatal.
-# Kolla's themes.scss uses Django template variables (@import "{{ THEME_DIR }}/...")
-# which libsass can't resolve at compress time, causing a non-zero exit. With
-# set -o errexit active this kills the startup script. The compressed output is
-# still usable — Horizon falls back to uncompressed assets gracefully.
-RUN sed -i 's/compress --force$/compress --force || true/' \
-    /usr/local/bin/kolla_extend_start
-# user) may need to read or write. This covers:
-#   - local/ (enabled/, local_settings.d/, .secret_key_store)
-#   - static/ (collectstatic --clear deletes then rewrites all files here)
-#   - /etc/openstack-dashboard/ (policy files, Kolla-injected settings)
-#   - /var/lib/kolla/ (settings hash file .settings.md5sum.txt)
-# Using the three distinct top-level roots avoids chowning unrelated venv files.
+# ── Pre-bake static files ──────────────────────────────────────────────────────
+# Pre-create .secret_key_store so local_settings.py reads it (not generate)
+# then run collectstatic as root at build time to bake assets into the image.
+RUN echo "build-only-not-a-real-key" \
+        > ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
+    && chmod 600 \
+        ${SITE_PACKAGES}/openstack_dashboard/local/.secret_key_store \
+    && /var/lib/kolla/venv/bin/python \
+        /var/lib/kolla/venv/bin/manage.py collectstatic \
+        --noinput --clear 2>&1 | tail -5
+
+# ── Fix ownership ──────────────────────────────────────────────────────────────
+# All COPY/RUN steps above ran as root. kolla_extend_start runs as the
+# `horizon` user and must be able to write to these paths at startup.
 RUN chown -R horizon:horizon \
         ${SITE_PACKAGES}/openstack_dashboard/local/ \
         ${SITE_PACKAGES}/static/ \
