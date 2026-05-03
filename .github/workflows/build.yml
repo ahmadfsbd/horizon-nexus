@@ -78,9 +78,14 @@ jobs:
             -p 8080:80 \
             ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }}
           sleep 8
-          curl -sf http://localhost:8080/auth/login/ \
-            | grep -q "nexus-vars" \
-            || (echo "FAIL: nexus theme not active (nexus-vars.css not found) for \
+          # Verify login page responds with HTTP 200
+          curl -sf http://localhost:8080/auth/login/ > /dev/null \
+            || (echo "FAIL: login page did not return HTTP 200 for \
+                ${{ matrix.release.name }}" && exit 1)
+          # Verify nexus theme static asset was baked in by collectstatic
+          curl -sf http://localhost:8080/static/themes/nexus/css/nexus-vars.css \
+            | grep -q "\-\-nexus-accent" \
+            || (echo "FAIL: nexus-vars.css not served — collectstatic may have failed for \
                 ${{ matrix.release.name }}" && exit 1)
           docker stop test-${{ matrix.release.name }}
 
