@@ -15,7 +15,6 @@ THEME_COLLECTION_DIR = 'themes'
 SITE_BRANDING = 'Nubestack'
 SITE_BRANDING_LINK = 'horizon:user_home'
 
-# Kolla/Horizon compressor stability
-COMPRESS_OFFLINE = False
-COMPRESS_ENABLED = False
-COMPRESS_PRECOMPILERS = ()
+# Let Kolla's compress --force handle SCSS compilation at container startup.
+# Do NOT disable COMPRESS_PRECOMPILERS — that prevents .scss → .css compilation
+# and causes browsers to receive raw .scss files (breaks all layouts).
