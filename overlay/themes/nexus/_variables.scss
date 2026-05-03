@@ -1,0 +1,23 @@
+// Nexus theme Bootstrap variable overrides.
+// This file is imported by Horizon's themes.scss compilation pipeline
+// via the ScssFilter custom importer at path: themes/nexus/_variables.scss
+// DO NOT move this file into a subdirectory.
+
+// Brand accent
+$brand-primary: #c37d7d;
+
+// Navbar — bakes our accent into Bootstrap's compiled CSS directly
+$navbar-default-bg:                    #c37d7d;
+$navbar-default-border:                darken(#c37d7d, 5%);
+$navbar-default-color:                 #fff;
+$navbar-default-link-color:            #fff;
+$navbar-default-link-hover-color:      #fff;
+$navbar-default-link-hover-bg:         rgba(255, 255, 255, 0.16);
+$navbar-default-link-active-color:     #fff;
+$navbar-default-link-active-bg:        rgba(255, 255, 255, 0.16);
+$navbar-default-brand-color:           #fff;
+$navbar-default-brand-hover-color:     #fff;
+$navbar-default-brand-hover-bg:        transparent;
+$navbar-default-toggle-hover-bg:       rgba(255, 255, 255, 0.16);
+$navbar-default-toggle-icon-bar-bg:    #fff;
+$navbar-default-toggle-border-color:   transparent;
