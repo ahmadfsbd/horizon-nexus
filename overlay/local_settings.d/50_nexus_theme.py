@@ -12,3 +12,7 @@ AVAILABLE_THEMES = [
 ]
 DEFAULT_THEME = 'nexus'
 THEME_COLLECTION_DIR = 'themes'
+
+# Branding
+SITE_BRANDING = 'Nubestack'
+SITE_BRANDING_LINK = 'horizon:user_home'

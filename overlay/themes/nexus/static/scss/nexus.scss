@@ -27,6 +27,17 @@ body {
   display: none !important;
 }
 
+// Remove the left offset that Horizon's layout adds to account for the sidebar
+#main_content {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+#content_body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
 // 6. Top navigation bar
 .navbar,
 #nexus-nav,

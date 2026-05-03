@@ -1,5 +1,10 @@
 {% extends "!base.html" %}
 
+{% block custom_metadata %}
+  {{ block.super }}
+  <link rel="shortcut icon" href="{{ STATIC_URL }}themes/nexus/img/favicon.ico">
+{% endblock %}
+
 {% block header %}
   {% include "header/_header.html" %}
 {% endblock %}
