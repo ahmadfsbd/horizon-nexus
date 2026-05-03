@@ -73,21 +73,34 @@ jobs:
 
       - name: Smoke test
         run: |
-          docker run -d \
-            --name test-${{ matrix.release.name }} \
-            -p 8080:80 \
-            ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }}
-          sleep 8
-          # Verify login page responds with HTTP 200
-          curl -sf http://localhost:8080/auth/login/ > /dev/null \
-            || (echo "FAIL: login page did not return HTTP 200 for \
-                ${{ matrix.release.name }}" && exit 1)
-          # Verify nexus theme static asset was baked in by collectstatic
-          curl -sf http://localhost:8080/static/themes/nexus/css/nexus-vars.css \
-            | grep -q "\-\-nexus-accent" \
-            || (echo "FAIL: nexus-vars.css not served — collectstatic may have failed for \
-                ${{ matrix.release.name }}" && exit 1)
+          # Run with a dummy entrypoint so the container stays up without
+          # needing a live Keystone/database (collectstatic already ran at build time)
+          docker run -d --name test-${{ matrix.release.name }} \
+            --entrypoint sleep \
+            ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }} infinity
+
+          # 1. Verify nexus-vars.css was baked in by collectstatic
+          docker exec test-${{ matrix.release.name }} \
+            grep -q "\-\-nexus-accent" \
+            /usr/share/openstack-dashboard/static/themes/nexus/css/nexus-vars.css \
+            || (echo "FAIL: nexus-vars.css missing or empty for ${{ matrix.release.name }}" \
+                && docker stop test-${{ matrix.release.name }} && exit 1)
+
+          # 2. Verify the nexus theme template override is in place
+          docker exec test-${{ matrix.release.name }} \
+            test -f /usr/share/openstack-dashboard/openstack_dashboard/templates/base.html \
+            || (echo "FAIL: base.html template override missing for ${{ matrix.release.name }}" \
+                && docker stop test-${{ matrix.release.name }} && exit 1)
+
+          # 3. Verify local_settings.d theme activation is present
+          docker exec test-${{ matrix.release.name }} \
+            grep -q "DEFAULT_THEME" \
+            /etc/openstack-dashboard/local_settings.d/50_nexus_theme.py \
+            || (echo "FAIL: 50_nexus_theme.py missing DEFAULT_THEME for ${{ matrix.release.name }}" \
+                && docker stop test-${{ matrix.release.name }} && exit 1)
+
           docker stop test-${{ matrix.release.name }}
+          echo "PASS: all smoke checks passed for ${{ matrix.release.name }}"
 
       - name: Push to Docker Hub
         run: |
