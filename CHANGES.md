@@ -20,7 +20,7 @@ Work through these **one at a time**. Deploy and verify each before moving to th
 
 ## 🔲 Pending (do one at a time)
 
-- [ ] **3. Splash/login page** — Verify `logo-splash.svg` shows correctly on login screen
+- [x] **3. Splash/login page** — `logo-splash.svg` background updated to `#3c7d7d` teal
 - [ ] **4. Sidebar accent** — Check sidebar active/hover states pick up the new teal color
 - [ ] **5. Primary buttons** — Verify `.btn-primary` uses teal (`$brand-primary`)
 - [ ] **6. Favicon** — Replace with Nubestack favicon if desired
