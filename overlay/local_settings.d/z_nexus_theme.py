@@ -28,3 +28,7 @@ SITE_BRANDING_LINK = 'horizon:user_home'
 # collectstatic already ran during the Docker build.
 COMPRESS_OFFLINE = False
 COMPRESS_ENABLED = False
+# django-compressor will still run precompilers when COMPRESS_PRECOMPILERS is
+# non-empty, even if COMPRESS_ENABLED is False. Kolla/Horizon registers SCSS
+# precompilers, which triggers the themes.scss compile crash at request time.
+COMPRESS_PRECOMPILERS = ()
