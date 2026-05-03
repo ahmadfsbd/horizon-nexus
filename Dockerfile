@@ -3,51 +3,33 @@ FROM quay.io/openstack.kolla/horizon:${HORIZON_TAG}
 
 USER root
 
-# Locate the horizon source tree (path contains a version number that varies
-# between releases, e.g. /horizon-source/horizon-25.3.3.dev2)
-# and export it as HORIZON_SRC for all subsequent RUN steps.
-RUN HORIZON_SRC=$(find /horizon-source -maxdepth 1 -mindepth 1 -type d | head -1) \
-    && echo "HORIZON_SRC=${HORIZON_SRC}" > /etc/horizon-src.env \
-    && echo "Horizon source: ${HORIZON_SRC}"
+# Runtime paths (used by uwsgi and kolla_extend_start at deploy time)
+ENV SITE_PACKAGES=/var/lib/kolla/venv/lib/python3/site-packages
 
-# Copy nexus theme into the themes directory
-COPY overlay/themes/nexus /tmp/nexus-theme/
-RUN . /etc/horizon-src.env \
-    && mkdir -p "${HORIZON_SRC}/openstack_dashboard/themes/nexus" \
-    && cp -r /tmp/nexus-theme/. "${HORIZON_SRC}/openstack_dashboard/themes/nexus/"
+# Copy nexus theme into the installed package themes directory
+COPY overlay/themes/nexus \
+     ${SITE_PACKAGES}/openstack_dashboard/themes/nexus
 
-# Copy template overrides
-RUN . /etc/horizon-src.env \
-    && cp -r /tmp/nexus-theme/templates/. "${HORIZON_SRC}/openstack_dashboard/templates/"
+# Copy template overrides into the installed package templates directory
+COPY overlay/themes/nexus/templates \
+     ${SITE_PACKAGES}/openstack_dashboard/templates/
 
-# Copy runtime theme settings into BOTH locations:
-#   1. /etc/openstack-dashboard/local_settings.d/  — picked up at runtime by Kolla
-#   2. <HORIZON_SRC>/openstack_dashboard/local/local_settings.d/ — picked up by
-#      manage.py collectstatic at build time (this is where settings.py looks)
-COPY overlay/local_settings.d/ /etc/openstack-dashboard/local_settings.d/
-RUN . /etc/horizon-src.env \
-    && mkdir -p "${HORIZON_SRC}/openstack_dashboard/local/local_settings.d" \
-    && cp /etc/openstack-dashboard/local_settings.d/50_nexus_theme.py \
-          "${HORIZON_SRC}/openstack_dashboard/local/local_settings.d/50_nexus_theme.py"
+# Copy runtime theme settings to /etc/ (picked up by Kolla at runtime)
+COPY overlay/local_settings.d/ \
+     /etc/openstack-dashboard/local_settings.d/
 
-# Provide a minimal build-time settings shim so Django can initialise
-# without a live database connection during collectstatic
-RUN . /etc/horizon-src.env \
-    && echo "DATABASES = {}\nSECRET_KEY = 'build-only-not-secret'" \
-       > "${HORIZON_SRC}/openstack_dashboard/local/local_settings.d/00_build_shim.py"
+# Also copy to the source tree local_settings.d so that the runtime
+# kolla_extend_start collectstatic (if triggered) also sees the nexus theme
+COPY overlay/local_settings.d/ \
+     ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/
 
-# Rebuild static assets with nexus theme included
-RUN . /etc/horizon-src.env \
-    && cd "${HORIZON_SRC}" \
-    && /var/lib/kolla/venv/bin/python manage.py collectstatic \
-       --noinput --clear 2>&1 | tail -20
-
-# Remove build shim and temp files — runtime config is injected by Kolla at deploy time
-RUN . /etc/horizon-src.env \
-    && rm "${HORIZON_SRC}/openstack_dashboard/local/local_settings.d/00_build_shim.py" \
-    && rm -rf /tmp/nexus-theme /etc/horizon-src.env
-
-# Ensure the log directory exists (uWSGI will fail to start without it)
-RUN mkdir -p /var/log/kolla/horizon && chown horizon:horizon /var/log/kolla/horizon
+# Provide a minimal build-time settings shim and run collectstatic now
+# so static assets are pre-baked into the image (faster container startup)
+RUN echo "DATABASES = {}\nSECRET_KEY = 'build-only-not-secret'" \
+    > ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/00_build_shim.py \
+    && /var/lib/kolla/venv/bin/python \
+       /var/lib/kolla/venv/bin/manage.py collectstatic \
+       --noinput --clear 2>&1 | tail -10 \
+    && rm ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/00_build_shim.py
 
 USER horizon
