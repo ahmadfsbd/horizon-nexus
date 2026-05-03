@@ -39,8 +39,7 @@ RUN echo "build-only-not-secret-key-store" \
 # which libsass can't resolve at compress time, causing a non-zero exit. With
 # set -o errexit active this kills the startup script. The compressed output is
 # still usable — Horizon falls back to uncompressed assets gracefully.
-RUN sed -i \
-    's|${MANAGE_PY} compress --force|${MANAGE_PY} compress --force || echo "WARNING: compress exited non-zero, continuing"|' \
+RUN sed -i 's/compress --force$/compress --force || true/' \
     /usr/local/bin/kolla_extend_start
 # user) may need to read or write. This covers:
 #   - local/ (enabled/, local_settings.d/, .secret_key_store)
