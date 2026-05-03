@@ -79,20 +79,18 @@ jobs:
             --entrypoint sleep \
             ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }} infinity
 
-          # Resolve the versioned horizon source path inside the container
-          HORIZON_SRC=$(docker exec test-${{ matrix.release.kolla_tag }} \
-            find /horizon-source -maxdepth 1 -mindepth 1 -type d | head -1)
+          SITE_PKG=/var/lib/kolla/venv/lib/python3/site-packages
 
           # 1. Verify nexus-vars.css was baked in by collectstatic
           docker exec test-${{ matrix.release.kolla_tag }} \
             grep -q "\-\-nexus-accent" \
-            "${HORIZON_SRC}/static/themes/nexus/css/nexus-vars.css" \
+            "${SITE_PKG}/openstack_dashboard/themes/nexus/static/css/nexus-vars.css" \
             || (echo "FAIL: nexus-vars.css missing or empty for ${{ matrix.release.kolla_tag }}" \
                 && docker stop test-${{ matrix.release.kolla_tag }} && exit 1)
 
           # 2. Verify the nexus theme template override is in place
           docker exec test-${{ matrix.release.kolla_tag }} \
-            test -f "${HORIZON_SRC}/openstack_dashboard/templates/base.html" \
+            test -f "${SITE_PKG}/openstack_dashboard/templates/base.html" \
             || (echo "FAIL: base.html template override missing for ${{ matrix.release.kolla_tag }}" \
                 && docker stop test-${{ matrix.release.kolla_tag }} && exit 1)
 
