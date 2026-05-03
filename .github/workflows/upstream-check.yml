@@ -71,9 +71,9 @@ jobs:
               repo: context.repo.repo,
               workflow_id: 'build.yml',
               ref: 'main',
-              inputs: { release: '${{ matrix.release.name }}' }
+              inputs: { release: '${{ matrix.release.kolla_tag }}' }
             });
-            console.log('Build triggered for ${{ matrix.release.name }}');
+            console.log('Build triggered for ${{ matrix.release.kolla_tag }}');
 
   commit-digests:
     needs: check
