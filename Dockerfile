@@ -34,7 +34,14 @@ RUN echo "build-only-not-secret-key-store" \
        /var/lib/kolla/venv/bin/manage.py collectstatic \
        --noinput --clear 2>&1 | tail -10
 
-# Restore ownership of ALL paths kolla_extend_start (running as the horizon
+# Patch kolla_extend_start to make `compress --force` non-fatal.
+# Kolla's themes.scss uses Django template variables (@import "{{ THEME_DIR }}/...")
+# which libsass can't resolve at compress time, causing a non-zero exit. With
+# set -o errexit active this kills the startup script. The compressed output is
+# still usable — Horizon falls back to uncompressed assets gracefully.
+RUN sed -i \
+    's|${MANAGE_PY} compress --force|${MANAGE_PY} compress --force || echo "WARNING: compress exited non-zero, continuing"|' \
+    /usr/local/bin/kolla_extend_start
 # user) may need to read or write. This covers:
 #   - local/ (enabled/, local_settings.d/, .secret_key_store)
 #   - static/ (collectstatic --clear deletes then rewrites all files here)
