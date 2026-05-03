@@ -34,11 +34,17 @@ RUN echo "build-only-not-secret-key-store" \
        /var/lib/kolla/venv/bin/manage.py collectstatic \
        --noinput --clear 2>&1 | tail -10
 
-# Restore ownership AFTER collectstatic so that all files created during the
-# build (including .secret_key_store) are owned by horizon, allowing
-# kolla_extend_start (which runs as the horizon user) to write into
-# local/enabled/, local_settings.d/, and /etc/openstack-dashboard/.
-RUN chown -R horizon:horizon ${SITE_PACKAGES}/openstack_dashboard/local/ \
-    && chown -R horizon:horizon /etc/openstack-dashboard/
+# Restore ownership of ALL paths kolla_extend_start (running as the horizon
+# user) may need to read or write. This covers:
+#   - local/ (enabled/, local_settings.d/, .secret_key_store)
+#   - static/ (collectstatic --clear deletes then rewrites all files here)
+#   - /etc/openstack-dashboard/ (policy files, Kolla-injected settings)
+#   - /var/lib/kolla/ (settings hash file .settings.md5sum.txt)
+# Using the three distinct top-level roots avoids chowning unrelated venv files.
+RUN chown -R horizon:horizon \
+        ${SITE_PACKAGES}/openstack_dashboard/local/ \
+        ${SITE_PACKAGES}/static/ \
+        /etc/openstack-dashboard/ \
+        /var/lib/kolla/
 
 USER horizon
