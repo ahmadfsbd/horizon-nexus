@@ -25,8 +25,11 @@ COPY overlay/local_settings.d/ \
 # template variable (@import "/{{ THEME_DIR }}/{{ THEME }}/variables") that
 # libsass cannot resolve at compress time. With `set -o errexit` active this
 # kills the startup script before uwsgi launches.
-# Fix: append `|| true` to line 227 (the compress --force line).
-RUN sed -i '227s/$/ || true/' /usr/local/bin/kolla_extend_start
+# Fix: find any line containing `compress --force` and append `|| true`.
+# Content-based match so this survives line number changes across image updates.
+RUN grep -q 'compress --force' /usr/local/bin/kolla_extend_start \
+    && sed -i '/compress --force/s/$/ || true/' /usr/local/bin/kolla_extend_start \
+    || { echo "ERROR: compress --force line not found in kolla_extend_start - patch needs updating"; exit 1; }
 
 # ── Pre-bake static files ──────────────────────────────────────────────────────
 # Pre-create .secret_key_store so local_settings.py reads it (not generate)
