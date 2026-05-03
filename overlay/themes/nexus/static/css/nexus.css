@@ -1,25 +1,23 @@
+@charset "UTF-8";
 :root {
-  --nexus-accent: #c37d7d;
-  --nexus-accent-dark: #a86464;
+  --nexus-accent: #3c7d7d;
+  --nexus-accent-dark: #2d6b6b;
 }
 
-/* Keep logo sizing within Horizon header bounds to avoid layout shifts */
-.navbar-brand .openstack-logo {
-  max-height: 30px;
+/* Logo sizing — constrain to navbar height, preserve aspect ratio */
+.navbar-brand .openstack-logo,
+.navbar-brand .nexus-brand-logo {
+  height: 28px;
+  max-height: 28px;
   width: auto;
+  display: block;
 }
 
 .navbar-brand.nexus-brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 700;
-}
-
-.nexus-brand-text {
-  color: #fff;
-  font-size: 15px;
-  letter-spacing: 0.2px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .splash-logo {

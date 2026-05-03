@@ -21,17 +21,17 @@ Work through these **one at a time**. Deploy and verify each before moving to th
 ## 🔲 Pending (do one at a time)
 
 - [x] **3. Splash/login page** — `logo-splash.svg` background updated to `#3c7d7d` teal
-- [ ] **4. Sidebar accent** — Check sidebar active/hover states pick up the new teal color
-- [ ] **5. Primary buttons** — Verify `.btn-primary` uses teal (`$brand-primary`)
-- [ ] **6. Favicon** — Replace with Nubestack favicon if desired
-- [ ] **7. Page title** — Confirm browser tab shows "Nubestack" (via `SITE_BRANDING`)
-- [ ] **8. Logo sizing** — Fine-tune logo height/padding in navbar if needed
+- [x] **4. Sidebar accent** — Covered automatically via `$brand-primary` → `$component-active-bg`
+- [x] **5. Primary buttons** — Covered automatically via `$brand-primary: #3c7d7d`
+- [ ] **6. Favicon** — Replace with Nubestack favicon (needs `.ico` file)
+- [x] **7. Page title** — `SITE_BRANDING = 'Nubestack'` already set
+- [x] **8. Logo sizing** — Height fixed to 28px, vertical centering improved, dead `.nexus-brand-text` CSS removed
 - [ ] **9. CI → auto deploy** — Wire `dev-deploy.sh` into workflow or add deploy step
 
 ---
 
 ## Current Accent Color
-`#c37d7d` (rose/mauve) — to be changed to `#3c7d7d` (teal) in item 1
+`#3c7d7d` (teal)
 
 ## Dev Deploy
 ```bash
