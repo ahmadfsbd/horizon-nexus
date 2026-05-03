@@ -1,0 +1,114 @@
+// Horizon Nexus — Main Theme Stylesheet
+// ----------------------------------------
+// 1. Import Horizon's own variables first (path relative to Horizon's scss root)
+@import "../../horizon/themes/default/static/scss/variables";
+
+// 2. Import Nexus variable overrides
+@import "variables";
+
+// 3. CSS custom properties — accent colour system
+//    These are the authoritative runtime values; nexus-vars.css (loaded last
+//    in base.html) can override them at deploy time without a rebuild.
+:root {
+  --nexus-accent:        #3c7d7d;
+  --nexus-accent-dark:   #2d5f5f;
+  --nexus-accent-light:  #5aa3a3;
+  --nexus-accent-subtle: #e8f4f4;
+  --nexus-text-on-accent: #ffffff;
+}
+
+// 4. Global typography
+body {
+  font-size: $base-font-size;
+}
+
+// 5. Remove sidebar — navigation is horizontal in the top bar
+.sidebar,
+.nav-stacked {
+  display: none !important;
+}
+
+// 6. Top navigation bar
+.navbar,
+#nexus-nav,
+.navbar-default {
+  background-color: var(--nexus-accent) !important;
+  border: none;
+  height: 56px;
+  min-height: 56px;
+
+  .navbar-nav > li > a,
+  .navbar-nav > li > a:focus {
+    color: var(--nexus-text-on-accent);
+    height: 56px;
+    line-height: 56px;
+    padding: 0 20px;
+  }
+
+  .navbar-nav > li > a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--nexus-text-on-accent);
+  }
+
+  .navbar-nav > li.active > a,
+  .navbar-nav > li.active > a:hover,
+  .navbar-nav > li.active > a:focus {
+    background-color: transparent;
+    color: var(--nexus-text-on-accent);
+    border-bottom: 2px solid var(--nexus-text-on-accent);
+  }
+}
+
+// 7. Panels
+.panel {
+  border-radius: $panel-border-radius;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+// 8. Container spacing
+.container,
+.container-fluid {
+  padding: 24px;
+}
+
+// 9. Buttons
+.btn {
+  border-radius: $border-radius-base;
+}
+
+.btn-primary {
+  background-color: var(--nexus-accent);
+  border-color: var(--nexus-accent-dark);
+
+  &:hover,
+  &:focus {
+    background-color: var(--nexus-accent-dark);
+    border-color: var(--nexus-accent-dark);
+  }
+}
+
+// 10. Tables
+.table thead {
+  background-color: var(--nexus-accent-subtle);
+}
+
+tr.selected,
+tr.selected td {
+  background-color: var(--nexus-accent-subtle) !important;
+}
+
+// 11. Links
+a:hover {
+  color: var(--nexus-accent-dark);
+}
+
+// 12. Focus rings
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(60, 125, 125, 0.25);
+}
+
+// 13. Content wrapper (injected by base.html block override)
+.nexus-content-wrapper {
+  padding-top: 0;
+}

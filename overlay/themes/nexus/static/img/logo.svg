@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Horizon Nexus">
+  <!-- Two interlocking hexagons representing infrastructure layers -->
+  <!-- Front hexagon (teal fill, white outline) -->
+  <polygon
+    points="24,4 38,12 38,28 24,36 10,28 10,12"
+    fill="#3c7d7d"
+    stroke="#ffffff"
+    stroke-width="2"
+  />
+  <!-- Inner hexagon (white fill) creating depth / layered-stack effect -->
+  <polygon
+    points="24,12 33,17 33,27 24,32 15,27 15,17"
+    fill="#ffffff"
+    opacity="0.85"
+  />
+  <!-- Accent diamond in centre -->
+  <polygon
+    points="24,17 29,22 24,27 19,22"
+    fill="#3c7d7d"
+  />
+</svg>

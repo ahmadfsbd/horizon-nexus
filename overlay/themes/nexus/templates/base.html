@@ -1,0 +1,20 @@
+{% extends "!base.html" %}
+
+{% block header %}
+  {% include "header/_header.html" %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet"
+    href="{{ STATIC_URL }}themes/nexus/css/nexus-vars.css">
+{% endblock %}
+
+{% block main %}
+  <div class="nexus-content-wrapper">
+    {{ block.super }}
+  </div>
+{% endblock %}

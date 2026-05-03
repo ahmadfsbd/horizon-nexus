@@ -1,0 +1,14 @@
+/* Horizon Nexus — CSS custom property overrides
+ *
+ * This file is loaded LAST in base.html so these values override the
+ * compiled defaults. Kolla operators replace this file at deploy time
+ * (via /etc/kolla/config/horizon/themes/nexus/static/css/nexus-vars.css)
+ * to change the colour scheme without rebuilding the image.
+ */
+:root {
+  --nexus-accent:         #3c7d7d;
+  --nexus-accent-dark:    #2d5f5f;
+  --nexus-accent-light:   #5aa3a3;
+  --nexus-accent-subtle:  #e8f4f4;
+  --nexus-text-on-accent: #ffffff;
+}

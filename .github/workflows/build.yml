@@ -1,0 +1,106 @@
+name: Build and Push
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Specific release name to build (empty = all)'
+        required: false
+        default: ''
+  workflow_call:
+    inputs:
+      release:
+        type: string
+        required: false
+        default: ''
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build release matrix
+        id: set-matrix
+        run: |
+          if [ -n "${{ inputs.release }}" ]; then
+            MATRIX=$(jq -c \
+              --arg r "${{ inputs.release }}" \
+              '[.releases[] | select(.name == $r)]' \
+              releases.json)
+          else
+            MATRIX=$(jq -c '.releases' releases.json)
+          fi
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set image tags
+        run: |
+          UI_VERSION=$(cat VERSION)
+          echo "PINNED_TAG=${{ matrix.release.name }}-${UI_VERSION}" >> $GITHUB_ENV
+          echo "FLOAT_TAG=${{ matrix.release.name }}-latest"         >> $GITHUB_ENV
+          echo "KOLLA_TAG=${{ matrix.release.kolla_tag }}"           >> $GITHUB_ENV
+
+      - name: Compile SCSS
+        run: |
+          npm install -g sass
+          sass overlay/themes/nexus/static/scss/nexus.scss \
+               overlay/themes/nexus/static/css/nexus.css \
+               --no-source-map
+
+      - name: Build image
+        run: |
+          docker build \
+            --build-arg HORIZON_TAG=${{ env.KOLLA_TAG }} \
+            -t ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }} \
+            -t ahmadfsbd/horizon-nexus:${{ env.FLOAT_TAG }} \
+            .
+
+      - name: Smoke test
+        run: |
+          docker run -d \
+            --name test-${{ matrix.release.name }} \
+            -p 8080:80 \
+            ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }}
+          sleep 8
+          curl -sf http://localhost:8080/auth/login/ \
+            | grep -q "nexus-nav" \
+            || (echo "FAIL: nexus-nav element not found for \
+                ${{ matrix.release.name }}" && exit 1)
+          docker stop test-${{ matrix.release.name }}
+
+      - name: Push to Docker Hub
+        run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | \
+            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          docker push ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }}
+          docker push ahmadfsbd/horizon-nexus:${{ env.FLOAT_TAG }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Build failed: ${{ matrix.release.name }}`,
+              body: `The build and push pipeline failed for release **${{ matrix.release.name }}**.\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              labels: ['build-failure']
+            });
+
+# ahmadfsbd/horizon-nexus:latest is NOT auto-pushed.
+# Promote manually by tagging and pushing a specific pinned image as latest.
