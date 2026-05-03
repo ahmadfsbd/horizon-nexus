@@ -47,4 +47,7 @@ RUN . /etc/horizon-src.env \
     && rm "${HORIZON_SRC}/openstack_dashboard/local/local_settings.d/00_build_shim.py" \
     && rm -rf /tmp/nexus-theme /etc/horizon-src.env
 
+# Ensure the log directory exists (uWSGI will fail to start without it)
+RUN mkdir -p /var/log/kolla/horizon && chown horizon:horizon /var/log/kolla/horizon
+
 USER horizon
