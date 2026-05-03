@@ -79,8 +79,8 @@ jobs:
             ahmadfsbd/horizon-nexus:${{ env.PINNED_TAG }}
           sleep 8
           curl -sf http://localhost:8080/auth/login/ \
-            | grep -q "nexus-nav" \
-            || (echo "FAIL: nexus-nav element not found for \
+            | grep -q "nexus-vars" \
+            || (echo "FAIL: nexus theme not active (nexus-vars.css not found) for \
                 ${{ matrix.release.name }}" && exit 1)
           docker stop test-${{ matrix.release.name }}
 
