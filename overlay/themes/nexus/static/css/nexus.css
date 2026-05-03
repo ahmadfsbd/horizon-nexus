@@ -15,6 +15,16 @@ body {
   display: none !important;
 }
 
+#main_content {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+#content_body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
 .navbar,
 #nexus-nav,
 .navbar-default {
@@ -54,6 +64,72 @@ body {
   border-bottom: 2px solid var(--nexus-text-on-accent);
 }
 
+#nexus-header {
+  background-color: var(--nexus-accent);
+  color: var(--nexus-text-on-accent);
+  min-height: 56px;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+#nexus-header .nexus-brand {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  flex: 0 0 auto;
+}
+#nexus-header .nexus-brand a {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+#nexus-header .nexus-brand img {
+  display: block;
+  height: 32px;
+  width: auto;
+  max-width: 180px;
+}
+#nexus-header #nexus-nav {
+  display: flex;
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+#nexus-header #nexus-nav .nexus-top-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  height: 56px;
+  width: 100%;
+}
+#nexus-header #nexus-nav .nexus-top-nav > li {
+  float: none;
+  display: flex;
+  align-items: stretch;
+}
+#nexus-header #nexus-nav .nexus-top-nav > li > a {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+  min-height: 56px;
+  padding: 0 16px;
+  white-space: nowrap;
+  color: var(--nexus-text-on-accent);
+}
+#nexus-header .nexus-user-menu {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--nexus-text-on-accent);
+}
+#nexus-header .nexus-user-menu a,
+#nexus-header .nexus-user-menu .dropdown-toggle {
+  color: var(--nexus-text-on-accent);
+}
+
 .panel {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -61,7 +137,7 @@ body {
 
 .container,
 .container-fluid {
-  padding: 24px;
+  padding: 16px 24px;
 }
 
 .btn {

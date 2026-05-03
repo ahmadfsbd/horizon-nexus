@@ -1,25 +1,23 @@
-{% load horizon %}
 {% load i18n %}
 
-<header id="nexus-header" style="background-color: var(--nexus-accent); height: 56px; display: flex; align-items: center; width: 100%;">
+<header id="nexus-header">
 
   {# Brand mark — logo only, no wordmark or text #}
-  <div class="nexus-brand" style="padding: 0 16px; flex-shrink: 0;">
+  <div class="nexus-brand">
     <a href="{% url 'horizon:user_home' %}">
       <img src="{{ STATIC_URL }}themes/nexus/img/logo.svg"
            alt=""
-           height="32"
-           style="display: block;">
+           height="32">
     </a>
   </div>
 
   {# Horizontal navigation driven entirely by Horizon's panel registry #}
-  <nav id="nexus-nav" role="navigation" style="flex: 1; height: 56px;">
+  <nav id="nexus-nav" role="navigation">
     {% include "nav/_top_nav.html" %}
   </nav>
 
   {# User menu — reuse Horizon's built-in user menu template tag #}
-  <div class="nexus-user-menu" style="padding: 0 16px; flex-shrink: 0; color: var(--nexus-text-on-accent);">
+  <div class="nexus-user-menu">
     {% include "header/_user_menu.html" %}
   </div>
 
