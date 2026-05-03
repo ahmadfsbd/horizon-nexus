@@ -23,6 +23,10 @@ COPY overlay/local_settings.d/ \
 COPY overlay/local_settings.d/ \
      ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/
 
+# Restore ownership of the local/ tree so kolla_extend_start (running as
+# the horizon user) can still write into local/enabled/ at container startup
+RUN chown -R horizon:horizon ${SITE_PACKAGES}/openstack_dashboard/local/
+
 # Provide a minimal build-time settings shim and run collectstatic now
 # so static assets are pre-baked into the image (faster container startup)
 RUN echo "DATABASES = {}\nSECRET_KEY = 'build-only-not-secret'" \
