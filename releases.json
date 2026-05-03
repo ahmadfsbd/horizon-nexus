@@ -1,6 +1,5 @@
 {
   "releases": [
-    { "name": "epoxy",    "kolla_tag": "2025.1-ubuntu-noble" },
-    { "name": "flamingo", "kolla_tag": "2025.2-ubuntu-noble" }
+    { "name": "master", "kolla_tag": "master-ubuntu-noble" }
   ]
 }
