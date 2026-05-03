@@ -1,10 +1,9 @@
 // Horizon Nexus — Main Theme Stylesheet
 // ----------------------------------------
-// 1. Import Horizon's own variables first (path relative to Horizon's scss root)
-@import "../../horizon/themes/default/static/scss/variables";
-
-// 2. Import Nexus variable overrides
-@import "variables";
+// 1. Import Nexus variable overrides
+//    (Horizon's upstream variables live inside the Kolla container and are not
+//     available at CI SCSS-compile time, so we do not import them here.)
+@use "variables" as *;
 
 // 3. CSS custom properties — accent colour system
 //    These are the authoritative runtime values; nexus-vars.css (loaded last
