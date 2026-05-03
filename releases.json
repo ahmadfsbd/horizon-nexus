@@ -1,6 +1,6 @@
 {
   "releases": [
-    { "name": "bobcat",   "kolla_tag": "2023.2" },
-    { "name": "caracal",  "kolla_tag": "2024.1" }
+    { "name": "epoxy",    "kolla_tag": "2025.1-ubuntu-noble" },
+    { "name": "flamingo", "kolla_tag": "2025.2-ubuntu-noble" }
   ]
 }

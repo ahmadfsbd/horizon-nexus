@@ -1,5 +1,5 @@
-ARG HORIZON_TAG=antelope
-FROM kolla/ubuntu-binary-horizon:${HORIZON_TAG}
+ARG HORIZON_TAG=2025.1-ubuntu-noble
+FROM quay.io/openstack.kolla/horizon:${HORIZON_TAG}
 
 USER root
 

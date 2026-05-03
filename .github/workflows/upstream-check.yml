@@ -37,8 +37,8 @@ jobs:
           DIGEST_FILE="digests/${TAG}.txt"
 
           LATEST=$(curl -s \
-            "https://hub.docker.com/v2/repositories/kolla/ubuntu-binary-horizon/tags/${TAG}" \
-            | jq -r '.images[0].digest // ""')
+            "https://quay.io/api/v1/repository/openstack.kolla/horizon/tag/${TAG}?onlyActiveTags=true" \
+            | jq -r '.tags[0].manifest_digest // ""')
 
           STORED=""
           if [ -f "$DIGEST_FILE" ]; then STORED=$(cat "$DIGEST_FILE"); fi
