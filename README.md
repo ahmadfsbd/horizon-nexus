@@ -12,7 +12,7 @@ images to Docker Hub under **ahmadfsbd/horizon-nexus**.
 Horizon Nexus is built on the **upstream base + overlay** pattern:
 
 - The base image is always the official `kolla/ubuntu-binary-horizon:<tag>` image. No upstream source files are ever modified.
-- All customisation lives exclusively in the `overlay/` directory: SCSS theme files, Django block-inheritance templates, and a `local_settings.d` snippet that activates the theme.
+- All customisation lives exclusively in the `overlay/` directory: SCSS/CSS theme files, minimal template metadata overrides, and a `local_settings.d` snippet that activates the theme.
 - The `Dockerfile` copies the overlay into the Kolla image, runs `collectstatic` to bake in the compiled assets, and produces a ready-to-deploy image.
 - Because we never fork Horizon, every new Kolla base image automatically picks up upstream security patches and feature updates with zero maintenance cost.
 
@@ -22,9 +22,9 @@ overlay/
 └── local_settings.d/      ← runtime settings snippet (theme activation)
 ```
 
-Template overrides use Django's `{% extends "!base.html" %}` block inheritance
-(`!` prefix means "upstream template") so only the changed blocks are declared —
-never full template copies.
+Template overrides use Django's normal `{% extends "base.html" %}` inheritance.
+For stability, this project uses a **non-invasive theming model**: keep Horizon's
+native structure/layout templates and apply visual changes through CSS only.
 
 ---
 
@@ -215,6 +215,28 @@ theme CSS), these values override the compiled defaults with no rebuild required
 ```
 
 No image rebuild. No pipeline run. Just run `kolla-ansible deploy`.
+
+---
+
+## 10. Horizon Theme Guide (Official)
+
+Yes—Horizon has an official theming guide:
+
+- https://docs.openstack.org/horizon/latest/configuration/themes.html
+
+Recommended safe pattern from upstream:
+
+1. Configure `AVAILABLE_THEMES` / `DEFAULT_THEME`
+2. Keep template overrides minimal (metadata/brand only when needed)
+3. Prefer SCSS/CSS overrides (`_variables.scss`, `_styles.scss`) for visual changes
+4. Run `collectstatic` after theme changes
+
+For advanced custom branding, upstream documents optional overrides such as:
+
+- `templates/header/_brand.html`
+- `templates/auth/_splash.html`
+
+These should be used sparingly to avoid breaking layout behavior across Horizon updates.
 
 ---
 
