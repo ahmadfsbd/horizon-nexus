@@ -273,6 +273,7 @@ li.dropdown.user-menu > a.dropdown-toggle {
   height: 40px;
   padding: 0;
   margin-top: 5px;
+  margin-left: 10px;
   margin-right: 12px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.55);
@@ -594,7 +595,6 @@ ul.panel-collapse > li.panel.openstack-panel-group > a:not(.collapsed) .openstac
 /* ─────────────────────────────────────────────
    Overview — Quota / Resource Usage Wheels
    ───────────────────────────────────────────── */
-/* Section wrapper */
 .quota-dynamic {
   padding: 20px 0 8px;
   overflow: visible;
@@ -618,33 +618,55 @@ ul.panel-collapse > li.panel.openstack-panel-group > a:not(.collapsed) .openstac
   margin: 18px 0 10px;
 }
 
-/* Card per quota wheel */
+/* Individual quota wheel — open, no box */
 .d3_quota_bar {
   text-align: center;
-  padding: 16px 10px 14px;
-  margin-bottom: 16px;
-  background: #fff;
-  border: 1px solid var(--nexus-border);
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: box-shadow var(--nexus-transition), transform var(--nexus-transition);
-  /* Make the SVG wheel bigger */
+  padding: 12px 8px;
+  margin-bottom: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  transition: opacity var(--nexus-transition);
+  /* Wheel size */
+  /* Percentage label inside the donut */
   /* Resource name */
-  /* "Used X of Y" line */
+  /* "Used X of Y" */
 }
 .d3_quota_bar:hover {
-  box-shadow: 0 6px 20px rgba(60, 125, 125, 0.12);
-  transform: translateY(-2px);
+  opacity: 0.85;
 }
 .d3_quota_bar .pie-chart-usage {
-  width: 96px !important;
+  width: 88px !important;
   display: inline-block;
-  /* Used arc — teal fill */
-  /* Remaining (background) arc */
+  position: relative; /* needed for the pseudo-element donut hole */
+  /* CSS donut hole — white circle centred over the SVG */
+  /* Drop the outer stroke on the background arc */
+  /* Background (remaining) arc — very soft teal */
+  /* Used arc */
 }
 .d3_quota_bar .pie-chart-usage svg {
-  width: 96px !important;
-  height: 96px !important;
+  width: 88px !important;
+  height: 88px !important;
+  display: block;
+}
+.d3_quota_bar .pie-chart-usage::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+}
+.d3_quota_bar .pie-chart-usage .arc {
+  stroke: none !important;
+}
+.d3_quota_bar .pie-chart-usage .arc:not(.inner) {
+  fill: #dff0f0 !important;
 }
 .d3_quota_bar .pie-chart-usage .arc.inner {
   fill: var(--nexus-accent) !important;
@@ -655,22 +677,23 @@ ul.panel-collapse > li.panel.openstack-panel-group > a:not(.collapsed) .openstac
 .d3_quota_bar .pie-chart-usage .arc.inner.FULL {
   fill: #ef4444 !important;
 }
-.d3_quota_bar .pie-chart-usage .arc:not(.inner) {
-  fill: var(--nexus-accent-subtle) !important;
-  stroke: var(--nexus-border) !important;
+.d3_quota_bar .pie-chart-label text {
+  fill: var(--nexus-accent-dark) !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
 }
 .d3_quota_bar .quota_title {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--nexus-text);
-  margin-top: 10px;
-  margin-bottom: 4px;
+  margin-top: 8px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .d3_quota_bar .quota_subtitle {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--nexus-text-muted);
   font-weight: 400;
   line-height: 1.4;
