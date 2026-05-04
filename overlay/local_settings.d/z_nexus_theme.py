@@ -5,7 +5,6 @@ This file intentionally uses only safe settings overrides.
 """
 
 AVAILABLE_THEMES = [
-    ('default', 'Default', 'themes/default'),
     ('nexus', 'Nexus', 'themes/nexus'),
 ]
 DEFAULT_THEME = 'nexus'

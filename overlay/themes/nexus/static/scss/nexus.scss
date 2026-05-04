@@ -6,8 +6,8 @@
 /* Logo sizing — constrain to navbar height, preserve aspect ratio */
 .navbar-brand .openstack-logo,
 .navbar-brand .nexus-brand-logo {
-  height: 36px;
-  max-height: 36px;
+  height: 44px;
+  max-height: 44px;
   width: auto;
   display: block;
 }
@@ -49,3 +49,15 @@
 /* Navbar and button colors are baked via Bootstrap variables in _variables.scss.
    No CSS overrides needed here for those. */
 
+/* Dropdown menu — force dark text regardless of navbar colour inheritance */
+.navbar .dropdown-menu > li > a,
+.navbar .dropdown-menu > li > a:hover,
+.navbar .dropdown-menu > li > a:focus {
+  color: #333 !important;
+}
+.navbar .dropdown-menu > .active > a,
+.navbar .dropdown-menu > .active > a:hover,
+.navbar .dropdown-menu > .active > a:focus {
+  color: #fff !important;
+  background-color: #3c7d7d !important;
+}
