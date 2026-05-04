@@ -637,7 +637,7 @@ ul.panel-collapse > li.panel.openstack-panel-group > a:not(.collapsed) .openstac
   opacity: 0.85;
 }
 .d3_quota_bar .pie-chart-usage {
-  width: 88px !important;
+  width: 140px !important;
   display: inline-block;
   position: relative; /* needed for the pseudo-element donut hole */
   /* CSS donut hole — white circle centred over the SVG */
@@ -646,8 +646,8 @@ ul.panel-collapse > li.panel.openstack-panel-group > a:not(.collapsed) .openstac
   /* Used arc */
 }
 .d3_quota_bar .pie-chart-usage svg {
-  width: 88px !important;
-  height: 88px !important;
+  width: 140px !important;
+  height: 140px !important;
   display: block;
 }
 .d3_quota_bar .pie-chart-usage::after {
@@ -656,8 +656,8 @@ ul.panel-collapse > li.panel.openstack-panel-group > a:not(.collapsed) .openstac
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: #fff;
   pointer-events: none;
