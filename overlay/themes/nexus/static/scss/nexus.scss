@@ -546,3 +546,97 @@ ul.panel-collapse > li.panel.openstack-panel-group > a {
 .alert-info    { border-left-color: var(--nexus-accent); }
 .alert-warning { border-left-color: #f59e0b; }
 .alert-danger  { border-left-color: #ef4444; }
+
+/* ─────────────────────────────────────────────
+   Overview — Quota / Resource Usage Wheels
+   ───────────────────────────────────────────── */
+
+/* Section wrapper */
+.quota-dynamic {
+  padding: 20px 0 8px;
+  overflow: visible;
+}
+
+.quota-dynamic .quota-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--nexus-accent-dark);
+  margin-bottom: 4px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--nexus-border);
+}
+
+.quota-dynamic h4 {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--nexus-text-muted);
+  margin: 18px 0 10px;
+}
+
+/* Card per quota wheel */
+.d3_quota_bar {
+  text-align: center;
+  padding: 16px 10px 14px;
+  margin-bottom: 16px;
+  background: #fff;
+  border: 1px solid var(--nexus-border);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow var(--nexus-transition), transform var(--nexus-transition);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(60, 125, 125, 0.12);
+    transform: translateY(-2px);
+  }
+
+  /* Make the SVG wheel bigger */
+  .pie-chart-usage {
+    width: 96px !important;
+    display: inline-block;
+
+    svg {
+      width: 96px !important;
+      height: 96px !important;
+    }
+
+    /* Used arc — teal fill */
+    .arc.inner {
+      fill: var(--nexus-accent) !important;
+
+      &.NEARLY_FULL { fill: #f59e0b !important; }
+      &.FULL        { fill: #ef4444 !important; }
+    }
+
+    /* Remaining (background) arc */
+    .arc:not(.inner) {
+      fill: var(--nexus-accent-subtle) !important;
+      stroke: var(--nexus-border) !important;
+    }
+  }
+
+  /* Resource name */
+  .quota_title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--nexus-text);
+    margin-top: 10px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* "Used X of Y" line */
+  .quota_subtitle {
+    font-size: 12px;
+    color: var(--nexus-text-muted);
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
