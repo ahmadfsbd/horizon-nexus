@@ -1,9 +1,31 @@
+/* ═══════════════════════════════════════════════════
+   Nexus Theme — Main Stylesheet
+   ═══════════════════════════════════════════════════ */
+
 :root {
-  --nexus-accent: #3c7d7d;
-  --nexus-accent-dark: #2d6b6b;
+  --nexus-accent:        #3c7d7d;
+  --nexus-accent-dark:   #2d6b6b;
+  --nexus-accent-subtle: #e8f4f4;
+  --nexus-text:          #1f2937;
+  --nexus-text-muted:    #6b7280;
+  --nexus-border:        #dde8e8;
+  --nexus-sidebar-bg:    #f4f9f9;
+  --nexus-radius:        10px;
+  --nexus-transition:    0.18s ease;
 }
 
-/* Logo sizing — constrain to navbar height, preserve aspect ratio */
+/* ─── Global typography ─── */
+body {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  color: var(--nexus-text);
+  -webkit-font-smoothing: antialiased;
+}
+a { transition: color var(--nexus-transition); }
+
+/* ─── Navbar ─── */
+.navbar-default {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
 .navbar-brand .openstack-logo,
 .navbar-brand .nexus-brand-logo {
   height: 44px;
@@ -11,105 +33,87 @@
   width: auto;
   display: block;
 }
-
 .navbar-brand.nexus-brand {
   display: inline-flex;
   align-items: center;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
-.splash-logo {
-  max-width: 280px;
-  width: auto;
-  height: auto;
+/* Dropdown */
+.navbar .dropdown-menu {
+  border-radius: 10px;
+  border: 1px solid var(--nexus-border);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  margin-top: 4px;
+  min-width: 180px;
 }
-
-/* Teal pill background makes the white logo visible on the white login page */
-.nexus-splash-logo {
-  background-color: #3c7d7d;
-  border-radius: 12px;
-  padding: 16px 28px;
-  max-width: 280px;
-}
-
-.nexus-splash-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.nexus-splash-tagline {
-  margin: 0;
-  font-size: 13px;
-  color: #6b7280;
-}
-
-/* Navbar and button colors are baked via Bootstrap variables in _variables.scss.
-   No CSS overrides needed here for those. */
-
-/* Dropdown menu — force dark text regardless of navbar colour inheritance */
-.navbar .dropdown-menu > li > a,
-.navbar .dropdown-menu > li > a:hover,
-.navbar .dropdown-menu > li > a:focus {
-  color: #333 !important;
+.navbar .dropdown-menu > li > a {
+  color: #374151 !important;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13.5px;
+  transition: background var(--nexus-transition), color var(--nexus-transition);
+  &:hover, &:focus {
+    background: var(--nexus-accent-subtle) !important;
+    color: var(--nexus-accent-dark) !important;
+    text-decoration: none;
+  }
 }
 .navbar .dropdown-menu > .active > a,
 .navbar .dropdown-menu > .active > a:hover,
 .navbar .dropdown-menu > .active > a:focus {
   color: #fff !important;
-  background-color: #3c7d7d !important;
+  background-color: var(--nexus-accent) !important;
 }
+
+/* ─── Login / Splash ─── */
+.splash-logo { max-width: 280px; width: auto; height: auto; }
+.nexus-splash-logo {
+  background-color: var(--nexus-accent);
+  border-radius: 14px;
+  padding: 18px 32px;
+  max-width: 280px;
+}
+.nexus-splash-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.nexus-splash-tagline { margin: 0; font-size: 13px; color: var(--nexus-text-muted); }
 
 /* ─────────────────────────────────────────────
    Modern Sidebar
    ───────────────────────────────────────────── */
-
-/* Sidebar shell */
 #sidebar {
-  background: #f8fafa;
-  border-right: 1px solid #e2ecec;
-  padding: 12px 8px;
+  background: var(--nexus-sidebar-bg);
+  border-right: 1px solid var(--nexus-border);
+  padding: 14px 8px 24px;
   min-height: 100%;
 }
+#sidebar-accordion { margin: 0; padding: 0; list-style: none; }
 
-/* Remove default nav-pills/stacked chrome */
-#sidebar-accordion {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* ── Dashboard-level toggle (e.g. "Project", "Admin") ── */
+/* Dashboard-level toggle */
 #sidebar-accordion > li.panel.openstack-dashboard {
-  background: none;
-  border: none;
-  box-shadow: none;
-  margin-bottom: 4px;
+  background: none; border: none; box-shadow: none; margin-bottom: 2px;
 }
-
 #sidebar-accordion > li.panel.openstack-dashboard > a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #3c7d7d;
+  color: var(--nexus-accent);
   background: transparent;
-  transition: background 0.18s ease, color 0.18s ease;
-
-  &:hover {
-    background: #e8f4f4;
-    text-decoration: none;
-  }
+  transition: background var(--nexus-transition);
+  &:hover { background: var(--nexus-accent-subtle); text-decoration: none; }
 }
-
-/* Chevron icon */
 #sidebar-accordion > li.panel.openstack-dashboard > a .openstack-toggle {
   font-size: 11px;
   transition: transform 0.22s ease;
@@ -118,94 +122,185 @@
   transform: rotate(180deg);
 }
 
-/* ── Panel-group toggle (e.g. "Compute", "Network") ── */
+/* Panel-group toggle */
 ul.panel-collapse > li.panel.openstack-panel-group > a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 7px 12px 7px 16px;
-  border-radius: 6px;
+  padding: 8px 12px 8px 18px;
+  border-radius: 7px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #5a8f8f;
   background: transparent;
-  margin-bottom: 2px;
-  transition: background 0.15s ease;
-
-  &:hover {
-    background: #e8f4f4;
-    text-decoration: none;
-  }
-
-  .openstack-toggle {
-    font-size: 10px;
-    transition: transform 0.22s ease;
-  }
-
-  &:not(.collapsed) .openstack-toggle {
-    transform: rotate(180deg);
-  }
+  margin: 2px 0;
+  transition: background var(--nexus-transition);
+  &:hover { background: var(--nexus-accent-subtle); text-decoration: none; }
+  .openstack-toggle { font-size: 10px; transition: transform 0.22s ease; }
+  &:not(.collapsed) .openstack-toggle { transform: rotate(180deg); }
 }
 
-/* ── Individual panel links (e.g. "Instances", "Images") ── */
+/* Individual panel links */
 .list-group a.list-group-item.openstack-panel {
-  display: block;
-  padding: 8px 12px 8px 24px;
+  display: flex;
+  align-items: center;
+  padding: 11px 14px 11px 26px;
   margin: 2px 0;
   border: none;
-  border-radius: 8px !important;
-  font-size: 13.5px;
+  border-radius: var(--nexus-radius) !important;
+  font-size: 14px;
   font-weight: 400;
+  line-height: 1.4;
   color: #374151;
   background: transparent;
   position: relative;
-  transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+  transition:
+    background var(--nexus-transition),
+    color var(--nexus-transition),
+    padding-left var(--nexus-transition);
 
-  /* Left accent bar */
   &::before {
     content: '';
     position: absolute;
-    left: 8px;
+    left: 9px;
     top: 50%;
     transform: translateY(-50%);
     width: 3px;
     height: 0;
     border-radius: 2px;
-    background: #3c7d7d;
+    background: var(--nexus-accent);
     transition: height 0.2s ease;
   }
-
   &:hover {
-    background: #e8f4f4;
-    color: #2d6b6b;
+    background: var(--nexus-accent-subtle);
+    color: var(--nexus-accent-dark);
     text-decoration: none;
-    padding-left: 28px;
-
-    &::before {
-      height: 60%;
-    }
+    padding-left: 30px;
+    &::before { height: 55%; }
   }
-
   &.active {
-    background: #3c7d7d !important;
+    background: var(--nexus-accent) !important;
     color: #fff !important;
     font-weight: 600;
-    padding-left: 28px;
+    padding-left: 30px;
+    &::before { height: 55%; background: rgba(255,255,255,0.55); }
+    &:hover { background: var(--nexus-accent-dark) !important; }
+  }
+}
+#sidebar .collapse { transition: height 0.24s ease; }
 
-    &::before {
-      height: 60%;
-      background: rgba(255, 255, 255, 0.6);
+/* ─────────────────────────────────────────────
+   Horizontal content tabs
+   ───────────────────────────────────────────── */
+.nav-tabs {
+  border-bottom: 2px solid var(--nexus-border);
+  > li {
+    margin-bottom: -2px;
+    > a {
+      padding: 12px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--nexus-text-muted);
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      background: transparent;
+      transition: color var(--nexus-transition), border-color var(--nexus-transition), background var(--nexus-transition);
+      margin-right: 0;
+      &:hover {
+        color: var(--nexus-accent);
+        border-bottom-color: var(--nexus-accent-subtle);
+        background: var(--nexus-accent-subtle);
+        border-radius: 8px 8px 0 0;
+      }
     }
-
-    &:hover {
-      background: #2d6b6b !important;
+    &.active > a,
+    &.active > a:hover,
+    &.active > a:focus {
+      color: var(--nexus-accent-dark);
+      font-weight: 700;
+      border: none;
+      border-bottom: 3px solid var(--nexus-accent);
+      background: transparent;
+      border-radius: 0;
     }
   }
 }
 
-/* Smooth collapse animation */
-#sidebar .collapse {
-  transition: height 0.25s ease;
+/* ─────────────────────────────────────────────
+   Tables
+   ───────────────────────────────────────────── */
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  > thead > tr > th {
+    background: var(--nexus-accent-subtle);
+    color: var(--nexus-accent-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 13px 14px;
+    border-bottom: 2px solid var(--nexus-border);
+  }
+  > tbody > tr {
+    transition: background var(--nexus-transition);
+    > td {
+      padding: 12px 14px;
+      vertical-align: middle;
+      border-top: 1px solid #f0f5f5;
+      font-size: 13.5px;
+    }
+    &:hover > td { background: #f6fbfb; }
+  }
 }
+
+/* ─────────────────────────────────────────────
+   Buttons
+   ───────────────────────────────────────────── */
+.btn {
+  border-radius: 7px;
+  font-weight: 500;
+  font-size: 13.5px;
+  transition: background var(--nexus-transition), border-color var(--nexus-transition),
+              box-shadow var(--nexus-transition), transform 0.1s ease;
+  &:active { transform: scale(0.97); }
+}
+.btn-primary {
+  box-shadow: 0 2px 6px rgba(60,125,125,0.3);
+  &:hover { box-shadow: 0 4px 12px rgba(60,125,125,0.4); }
+}
+
+/* ─────────────────────────────────────────────
+   Panels / Cards
+   ───────────────────────────────────────────── */
+.panel {
+  border-radius: var(--nexus-radius);
+  border: 1px solid var(--nexus-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  overflow: hidden;
+  .panel-heading {
+    background: var(--nexus-accent-subtle);
+    border-bottom: 1px solid var(--nexus-border);
+    padding: 12px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--nexus-accent-dark);
+  }
+  .panel-body { padding: 18px; }
+}
+
+/* ─────────────────────────────────────────────
+   Alerts
+   ───────────────────────────────────────────── */
+.alert {
+  border-radius: 8px;
+  border-left-width: 4px;
+  font-size: 13.5px;
+}
+.alert-success { border-left-color: #22c55e; }
+.alert-info    { border-left-color: var(--nexus-accent); }
+.alert-warning { border-left-color: #f59e0b; }
+.alert-danger  { border-left-color: #ef4444; }
