@@ -102,6 +102,149 @@ a { transition: color var(--nexus-transition); }
   }
 }
 
+/* ─────────────────────────────────────────────
+   Project / Context selection dropdown
+   The inner _project_list.html renders a nested
+   <ul class="dropdown-menu"> — strip its box styles
+   so it looks like a flat list, not a box-in-box.
+   ───────────────────────────────────────────── */
+
+/* Trigger: align icon + project name + caret cleanly */
+.navbar .dropdown > a.dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  white-space: nowrap;
+
+  .fa-caret-down {
+    font-size: 11px;
+    margin-left: 2px;
+    opacity: 0.85;
+  }
+
+  .context-overview {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .context-delimiter {
+    font-size: 5px;
+    opacity: 0.6;
+  }
+}
+
+/* Outer context-selection dropdown — already styled via .navbar .dropdown-menu */
+.navbar .dropdown-menu.context-selection {
+  min-width: 240px;
+  padding: 10px;
+}
+
+/* Inner nested dropdown-menu from _project_list.html — flatten it */
+.navbar .dropdown-menu.context-selection .dropdown-menu {
+  display: block !important;
+  position: static !important;
+  float: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  animation: none !important;
+  min-width: 0 !important;
+
+  /* Section header "Projects:" */
+  > li.dropdown-header {
+    padding: 4px 8px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--nexus-text-muted);
+  }
+
+  /* Project items */
+  > li > a {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #374151 !important;
+    transition: background var(--nexus-transition), color var(--nexus-transition) !important;
+
+    &:hover {
+      background: var(--nexus-accent-subtle) !important;
+      color: var(--nexus-accent-dark) !important;
+      transform: translateX(3px);
+    }
+
+    /* Check icon — hidden unless active */
+    .fa-check.dropdown-selected-icon {
+      font-size: 12px;
+      color: var(--nexus-accent);
+      visibility: hidden;
+      flex-shrink: 0;
+    }
+
+    &.dropdown-selected {
+      font-weight: 600 !important;
+      color: var(--nexus-accent-dark) !important;
+      background: var(--nexus-accent-subtle) !important;
+
+      .fa-check.dropdown-selected-icon {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+/* ─── User menu trigger — icon-only pill ─── */
+li.dropdown.user-menu > a.dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin-top: 5px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.12);
+  transition: background var(--nexus-transition), border-color var(--nexus-transition),
+              box-shadow var(--nexus-transition);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+    text-decoration: none;
+  }
+
+  /* Hide the username text and caret — icon only */
+  .user-name,
+  .fa-caret-down {
+    display: none !important;
+  }
+
+  /* Make the person icon slightly bigger */
+  .fa-user {
+    font-size: 16px;
+    color: #fff;
+    line-height: 1;
+  }
+}
+
 /* ─── Login / Splash ─── */
 .splash-logo { max-width: 280px; width: auto; height: auto; }
 .nexus-splash-logo {
