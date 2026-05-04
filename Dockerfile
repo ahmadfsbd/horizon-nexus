@@ -8,6 +8,9 @@ ENV SITE_PACKAGES=/var/lib/kolla/venv/lib/python3/site-packages
 # Theme overlay (safe: no global template replacement)
 COPY overlay/themes/nexus ${SITE_PACKAGES}/openstack_dashboard/themes/nexus
 
+# Global template overrides — apply regardless of active theme
+COPY overlay/global_templates/ ${SITE_PACKAGES}/openstack_dashboard/templates/
+
 # Settings overlays for kolla runtime + python local settings
 COPY overlay/local_settings.d/ /etc/openstack-dashboard/local_settings.d/
 COPY overlay/local_settings.d/ ${SITE_PACKAGES}/openstack_dashboard/local/local_settings.d/
