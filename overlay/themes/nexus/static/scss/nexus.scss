@@ -403,14 +403,14 @@ body#splash .login .panel .panel-footer {
   padding-bottom: 24px;
   p {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: #111;
     margin: 0;
   }
   a {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--nexus-accent);
     font-weight: 600;
     text-decoration: none;
-    &:hover { color: #fff; text-decoration: underline; }
+    &:hover { color: var(--nexus-accent-dark); text-decoration: underline; }
   }
 }
 

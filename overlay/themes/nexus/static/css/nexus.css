@@ -343,7 +343,7 @@ body#splash .login .panel .panel-heading {
 /* "Log in" title inside panel-heading */
 body#splash .login .panel .panel-heading .login-title {
   color: rgba(255, 255, 255, 0.85);
-  font-size: 15px;
+  font-size: 24px;
   font-weight: 500;
   margin: 8px 0 0;
   letter-spacing: 0.03em;
@@ -392,16 +392,16 @@ body#splash .login .panel .panel-footer {
 }
 .nexus-login-footer p {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #111;
   margin: 0;
 }
 .nexus-login-footer a {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--nexus-accent);
   font-weight: 600;
   text-decoration: none;
 }
 .nexus-login-footer a:hover {
-  color: #fff;
+  color: var(--nexus-accent-dark);
   text-decoration: underline;
 }
 
