@@ -335,50 +335,88 @@ li.dropdown.user-menu > a.dropdown-toggle {
 }
 
 /* ─── Login / Splash ─── */
-/* Login panel — slightly darker card */
-body#splash .login .panel {
-  background: #f0f6f6;
-  border-color: var(--nexus-border);
-  box-shadow: 0 8px 32px rgba(44, 107, 107, 0.13), 0 2px 8px rgba(0,0,0,0.07);
-  border-radius: 16px;
-  overflow: hidden;
-}
-body#splash .login .panel .panel-heading {
-  background: #daeaea;
-  border-bottom-color: var(--nexus-border);
+
+/* Full-page teal gradient background */
+body#splash {
+  background: linear-gradient(145deg, #2d6b6b 0%, #3c7d7d 45%, #4a9494 100%);
+  min-height: 100vh;
 }
 
-/* Logo — no box, original SVG colors */
+/* Centered login card */
+body#splash .login .panel {
+  background: #fff;
+  border: none;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22), 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+/* Panel heading = teal brand area with logo */
+body#splash .login .panel .panel-heading {
+  background: linear-gradient(135deg, #2d6b6b 0%, #3c7d7d 100%);
+  border-bottom: none;
+  padding: 28px 32px 22px;
+  text-align: center;
+}
+
+/* "Log in" title inside panel-heading */
+body#splash .login .panel .panel-heading .login-title {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 8px 0 0;
+  letter-spacing: 0.03em;
+}
+
+/* Logo — SVG white fills look perfect on teal */
 .splash-logo {
-  max-width: 220px;
+  max-width: 200px;
   width: auto;
   height: auto;
   display: block;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
 }
 .nexus-splash-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 8px 0 4px;
+  gap: 8px;
 }
-.nexus-splash-tagline { margin: 0; font-size: 13px; color: var(--nexus-text-muted); }
+.nexus-splash-tagline {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.04em;
+}
 
-/* Copyright footer */
+/* Form body */
+body#splash .login .panel .panel-body {
+  padding: 28px 32px 20px;
+}
+
+/* Footer area inside panel */
+body#splash .login .panel .panel-footer {
+  background: #f8fafa;
+  border-top: 1px solid var(--nexus-border);
+  padding: 16px 32px;
+}
+
+/* Copyright footer below the card */
 .nexus-login-footer {
   text-align: center;
-  margin-top: 20px;
-  padding-bottom: 16px;
+  margin-top: 18px;
+  padding-bottom: 24px;
   p {
     font-size: 13px;
-    color: var(--nexus-text-muted);
+    color: rgba(255, 255, 255, 0.6);
     margin: 0;
   }
   a {
-    color: var(--nexus-accent);
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 600;
     text-decoration: none;
-    &:hover { color: var(--nexus-accent-dark); text-decoration: underline; }
+    &:hover { color: #fff; text-decoration: underline; }
   }
 }
 
