@@ -61,3 +61,151 @@
   color: #fff !important;
   background-color: #3c7d7d !important;
 }
+
+/* ─────────────────────────────────────────────
+   Modern Sidebar
+   ───────────────────────────────────────────── */
+
+/* Sidebar shell */
+#sidebar {
+  background: #f8fafa;
+  border-right: 1px solid #e2ecec;
+  padding: 12px 8px;
+  min-height: 100%;
+}
+
+/* Remove default nav-pills/stacked chrome */
+#sidebar-accordion {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── Dashboard-level toggle (e.g. "Project", "Admin") ── */
+#sidebar-accordion > li.panel.openstack-dashboard {
+  background: none;
+  border: none;
+  box-shadow: none;
+  margin-bottom: 4px;
+}
+
+#sidebar-accordion > li.panel.openstack-dashboard > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #3c7d7d;
+  background: transparent;
+  transition: background 0.18s ease, color 0.18s ease;
+
+  &:hover {
+    background: #e8f4f4;
+    text-decoration: none;
+  }
+}
+
+/* Chevron icon */
+#sidebar-accordion > li.panel.openstack-dashboard > a .openstack-toggle {
+  font-size: 11px;
+  transition: transform 0.22s ease;
+}
+#sidebar-accordion > li.panel.openstack-dashboard > a:not(.collapsed) .openstack-toggle {
+  transform: rotate(180deg);
+}
+
+/* ── Panel-group toggle (e.g. "Compute", "Network") ── */
+ul.panel-collapse > li.panel.openstack-panel-group > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px 7px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #5a8f8f;
+  background: transparent;
+  margin-bottom: 2px;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #e8f4f4;
+    text-decoration: none;
+  }
+
+  .openstack-toggle {
+    font-size: 10px;
+    transition: transform 0.22s ease;
+  }
+
+  &:not(.collapsed) .openstack-toggle {
+    transform: rotate(180deg);
+  }
+}
+
+/* ── Individual panel links (e.g. "Instances", "Images") ── */
+.list-group a.list-group-item.openstack-panel {
+  display: block;
+  padding: 8px 12px 8px 24px;
+  margin: 2px 0;
+  border: none;
+  border-radius: 8px !important;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #374151;
+  background: transparent;
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+
+  /* Left accent bar */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    border-radius: 2px;
+    background: #3c7d7d;
+    transition: height 0.2s ease;
+  }
+
+  &:hover {
+    background: #e8f4f4;
+    color: #2d6b6b;
+    text-decoration: none;
+    padding-left: 28px;
+
+    &::before {
+      height: 60%;
+    }
+  }
+
+  &.active {
+    background: #3c7d7d !important;
+    color: #fff !important;
+    font-weight: 600;
+    padding-left: 28px;
+
+    &::before {
+      height: 60%;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    &:hover {
+      background: #2d6b6b !important;
+    }
+  }
+}
+
+/* Smooth collapse animation */
+#sidebar .collapse {
+  transition: height 0.25s ease;
+}
