@@ -21,9 +21,17 @@
 }
 
 .splash-logo {
-  max-width: 320px;
+  max-width: 280px;
   width: auto;
   height: auto;
+}
+
+/* Teal pill background makes the white logo visible on the white login page */
+.nexus-splash-logo {
+  background-color: #3c7d7d;
+  border-radius: 12px;
+  padding: 16px 28px;
+  max-width: 280px;
 }
 
 .nexus-splash-wrap {
