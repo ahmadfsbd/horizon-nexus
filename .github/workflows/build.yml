@@ -6,8 +6,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  # ── Step 1: read releases.json and emit the matrix ──────────────────────
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build matrix from releases.json
+        id: set-matrix
+        run: |
+          # Convert releases array to a JSON matrix object GitHub Actions understands
+          MATRIX=$(jq -c '{ include: [ .releases[] | { name: .name, kolla_tag: .kolla_tag } ] }' releases.json)
+          echo "matrix=${MATRIX}" >> $GITHUB_OUTPUT
+
+  # ── Step 2: build + push one image per release ───────────────────────────
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false          # keep building other releases if one fails
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,16 +46,18 @@ jobs:
       - name: Run smoke checks
         run: npm run test:theme
 
-      - name: Set tags
+      - name: Set image tags
         run: |
           UI_VERSION=$(cat VERSION)
-          echo "TAG_PIN=master-ubuntu-noble-${UI_VERSION}" >> $GITHUB_ENV
-          echo "TAG_FLOAT=master-ubuntu-noble-latest" >> $GITHUB_ENV
+          KOLLA_TAG="${{ matrix.kolla_tag }}"
+          echo "TAG_PIN=${KOLLA_TAG}-${UI_VERSION}"   >> $GITHUB_ENV
+          echo "TAG_FLOAT=${KOLLA_TAG}-latest"        >> $GITHUB_ENV
+          echo "KOLLA_TAG=${KOLLA_TAG}"               >> $GITHUB_ENV
 
       - name: Build image
         run: |
           docker build \
-            --build-arg HORIZON_TAG=master-ubuntu-noble \
+            --build-arg HORIZON_TAG=${KOLLA_TAG} \
             -t ahmadfsbd/horizon-nexus:${TAG_PIN} \
             -t ahmadfsbd/horizon-nexus:${TAG_FLOAT} \
             .
@@ -48,7 +71,7 @@ jobs:
           docker push ahmadfsbd/horizon-nexus:${TAG_FLOAT}
 
       - name: Deploy to VM
-        if: env.DEPLOY_HOST != ''
+        if: env.DEPLOY_HOST != '' && matrix.name == 'master'
         env:
           SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
@@ -59,7 +82,7 @@ jobs:
           ssh -i /tmp/deploy_key \
               -o StrictHostKeyChecking=no \
               ${DEPLOY_USER}@${DEPLOY_HOST} \
-              "sudo docker pull ahmadfsbd/horizon-nexus:master-ubuntu-noble-latest && \
+              "sudo docker pull ahmadfsbd/horizon-nexus:${TAG_FLOAT} && \
                sudo docker stop horizon && \
                sudo docker rm horizon && \
                sudo docker run -d --name horizon --network host \
@@ -67,5 +90,5 @@ jobs:
                  -v /etc/kolla/horizon/:/var/lib/kolla/config_files/:ro \
                  -v /etc/localtime:/etc/localtime:ro \
                  -v /var/log/kolla/horizon:/var/log/kolla/horizon \
-                 ahmadfsbd/horizon-nexus:master-ubuntu-noble-latest"
+                 ahmadfsbd/horizon-nexus:${TAG_FLOAT}"
           rm -f /tmp/deploy_key
