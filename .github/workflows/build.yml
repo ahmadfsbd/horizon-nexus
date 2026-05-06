@@ -71,7 +71,7 @@ jobs:
           docker push ahmadfsbd/horizon-nexus:${TAG_FLOAT}
 
       - name: Deploy to VM
-        if: ${{ secrets.DEPLOY_HOST != '' && matrix.name == 'master' }}
+        if: ${{ env.DEPLOY_HOST != '' && matrix.name == 'master' }}
         env:
           SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
