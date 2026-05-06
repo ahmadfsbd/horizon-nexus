@@ -44,5 +44,47 @@
       /* Also try on horizon ready in case scripts load late */
       window.addEventListener('load', patchPieCharts);
     })();
+
+    /*
+     * Nexus: fix TypeError in Create Image dialog.
+     *
+     * Root cause: glance.service.js getImages() catches API errors by calling
+     * toastService and returning undefined (no fallback return). The controller's
+     * onGetImages() then does response.data.items.filter(...) → TypeError because
+     * response is undefined.
+     *
+     * Fix: decorate the glance service via Angular's $provide.decorator so
+     * getImages() always resolves with {data:{items:[]}} on failure instead of
+     * resolving with undefined.
+     */
+    (function () {
+      function patchGlanceService() {
+        if (typeof angular === 'undefined') { return; }
+        try {
+          angular.module('horizon.app.core.openstack-service-api')
+            .config(['$provide', function ($provide) {
+              $provide.decorator('horizon.app.core.openstack-service-api.glance',
+                ['$delegate', '$q', function ($delegate, $q) {
+                  var _orig = $delegate.getImages;
+                  $delegate.getImages = function (params) {
+                    return _orig.call($delegate, params).then(function (response) {
+                      /* If upstream catch swallowed the error, response is
+                         undefined — return a safe empty list instead. */
+                      if (!response || !response.data) {
+                        return { data: { items: [] } };
+                      }
+                      return response;
+                    });
+                  };
+                  return $delegate;
+                }]
+              );
+            }]);
+        } catch (e) {
+          /* Angular not ready yet — will be fine, the module exists by load time */
+        }
+      }
+      patchGlanceService();
+    })();
   </script>
 {% endblock %}
