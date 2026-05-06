@@ -1,0 +1,37 @@
+// Nexus theme — Bootstrap variable overrides.// Nexus theme Bootstrap variable overrides.
+
+// Required by Horizon's themes.scss: @import "/{{ THEME_DIR }}/{{ THEME }}/variables"// themes.scss imports this file BEFORE bootstrap and horizon variables.
+
+// Visual theming is handled via nexus.scss / nexus.css — keep this file minimal.// Set our overrides here WITHOUT !default so they take precedence,
+
+// then import the full Bootstrap variable set to fill in everything else.
+
+// Our accent color - set before bootstrap so $brand-primary is ours
+$brand-primary: #3c7d7d;
+
+// Navbar accent baked in at compile time
+$navbar-default-bg:                    #3c7d7d;
+$navbar-default-border:                #2d6b6b;
+$navbar-default-color:                 #fff;
+$navbar-default-link-color:            #fff;
+$navbar-default-link-hover-color:      #fff;
+$navbar-default-link-hover-bg:         rgba(255, 255, 255, 0.16);
+$navbar-default-link-active-color:     #fff;
+$navbar-default-link-active-bg:        rgba(255, 255, 255, 0.16);
+$navbar-default-brand-color:           #fff;
+$navbar-default-brand-hover-color:     #fff;
+$navbar-default-brand-hover-bg:        transparent;
+$navbar-default-toggle-hover-bg:       rgba(255, 255, 255, 0.16);
+$navbar-default-toggle-icon-bar-bg:    #fff;
+$navbar-default-toggle-border-color:   transparent;
+
+// Dropdown menus — white background with dark text so logout/user items are readable
+$dropdown-bg:                          #fff;
+$dropdown-link-color:                  #333;
+$dropdown-link-hover-color:            #333;
+$dropdown-link-hover-bg:               #f5f5f5;
+$dropdown-link-active-color:           #fff;
+$dropdown-link-active-bg:              #3c7d7d;
+
+// Now import Bootstrap's full variable set (fills in all !default values)
+@import "/horizon/lib/bootstrap_scss/scss/bootstrap/variables";

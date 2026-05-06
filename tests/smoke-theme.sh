@@ -8,6 +8,8 @@ cd "$ROOT_DIR"
 [ -f "overlay/themes/nexus/static/css/nexus.css" ]
 [ -f "overlay/themes/nexus/static/img/logo.svg" ]
 [ -f "overlay/themes/nexus/static/img/logo-splash.svg" ]
+[ -f "overlay/themes/nexus/static/_variables.scss" ]
+[ -f "overlay/themes/nexus/static/_styles.scss" ]
 [ -f "overlay/local_settings.d/z_nexus_theme.py" ]
 
 grep -q "DEFAULT_THEME = 'nexus'" overlay/local_settings.d/z_nexus_theme.py
