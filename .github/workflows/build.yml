@@ -48,17 +48,14 @@ jobs:
 
       - name: Set image tags
         run: |
-          UI_VERSION=$(cat VERSION)
           KOLLA_TAG="${{ matrix.kolla_tag }}"
-          echo "TAG_PIN=${KOLLA_TAG}-${UI_VERSION}"   >> $GITHUB_ENV
-          echo "TAG_FLOAT=${KOLLA_TAG}-latest"        >> $GITHUB_ENV
-          echo "KOLLA_TAG=${KOLLA_TAG}"               >> $GITHUB_ENV
+          echo "TAG_FLOAT=${KOLLA_TAG}-latest" >> $GITHUB_ENV
+          echo "KOLLA_TAG=${KOLLA_TAG}"        >> $GITHUB_ENV
 
       - name: Build image
         run: |
           docker build \
             --build-arg HORIZON_TAG=${KOLLA_TAG} \
-            -t ahmadfsbd/horizon-nexus:${TAG_PIN} \
             -t ahmadfsbd/horizon-nexus:${TAG_FLOAT} \
             .
 
@@ -67,7 +64,6 @@ jobs:
 
       - name: Push image
         run: |
-          docker push ahmadfsbd/horizon-nexus:${TAG_PIN}
           docker push ahmadfsbd/horizon-nexus:${TAG_FLOAT}
 
       - name: Deploy to VM

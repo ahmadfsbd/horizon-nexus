@@ -59,12 +59,11 @@ Edit **`releases.json`** — the CI pipeline reads it and builds one image per e
 }
 ```
 
-Each entry produces two Docker Hub tags:
+Each entry produces one Docker Hub tag:
 
 | Tag | Example | Purpose |
 |---|---|---|
-| `{kolla_tag}-latest` | `master-ubuntu-noble-latest` | Floating — always latest build |
-| `{kolla_tag}-{VERSION}` | `master-ubuntu-noble-1.0.0` | Pinned — stable reference |
+| `{kolla_tag}-latest` | `master-ubuntu-noble-latest` | Floating — always the latest build |
 
 Auto-deploy to the VM runs only for the `master` release.
 
