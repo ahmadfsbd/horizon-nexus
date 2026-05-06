@@ -321,6 +321,29 @@ li.dropdown.user-menu > a.dropdown-toggle .fa-user {
   line-height: 1;
 }
 
+/* User dropdown — username header row */
+.nexus-user-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 10px;
+  pointer-events: none;
+}
+.nexus-user-header .nexus-user-avatar {
+  font-size: 28px;
+  color: var(--nexus-accent);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.nexus-user-header .nexus-user-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--nexus-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ─── Login / Splash ─── */
 /* Centered login card */
 body#splash .login .panel {
