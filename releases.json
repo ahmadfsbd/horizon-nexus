@@ -2,7 +2,6 @@
   "_comment": "Kolla Horizon tags: https://quay.io/repository/openstack.kolla/horizon?tab=tags",
   "releases": [
     { "name": "master",   "kolla_tag": "master-ubuntu-noble" },
-    { "name": "2024.2",   "kolla_tag": "2024.2-ubuntu-noble" },
-    { "name": "2024.1",   "kolla_tag": "2024.1-ubuntu-jammy" }
+    { "name": "2025.2",   "kolla_tag": "2025.2-ubuntu-noble" }
   ]
 }

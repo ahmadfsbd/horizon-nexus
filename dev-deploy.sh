@@ -3,7 +3,7 @@
 # Usage: ./dev-deploy.sh
 set -euo pipefail
 
-VM=ubuntu@192.168.122.39
+VM=ubuntu@192.168.122.227
 IMAGE=horizon-nexus:dev
 
 echo "==> Building image..."
